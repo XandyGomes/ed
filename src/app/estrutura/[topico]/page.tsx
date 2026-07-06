@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { topicosDisponiveis, getTopico } from "@/data/topicos";
 import { TopicTabs } from "@/components/layout/TopicTabs";
@@ -26,10 +27,16 @@ export default async function TopicoPage({
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <p className="mb-1 text-sm font-medium text-[var(--color-primary)]">
+      <Link
+        href="/"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-foreground)]"
+      >
+        ← Todos os tópicos
+      </Link>
+      <p className="mb-2 font-mono text-xs uppercase tracking-widest text-[var(--color-primary)]">
         Estrutura de Dados
       </p>
-      <h1 className="mb-2 text-3xl font-bold tracking-tight">{topico.titulo}</h1>
+      <h1 className="mb-2 text-3xl font-semibold tracking-tight">{topico.titulo}</h1>
       <p className="mb-8 text-[var(--color-muted)]">{topico.descricao}</p>
 
       <TopicTabs
