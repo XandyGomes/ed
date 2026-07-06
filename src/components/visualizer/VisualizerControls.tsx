@@ -26,7 +26,7 @@ export function VisualizerControls<TState>({ visualizer }: Props<TState>) {
 
   return (
     <div
-      className="flex flex-col gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4"
+      className="glass-panel flex flex-col gap-3 rounded-2xl p-4"
       onKeyDown={(e) => {
         if (e.key === " ") {
           e.preventDefault();
@@ -53,7 +53,7 @@ export function VisualizerControls<TState>({ visualizer }: Props<TState>) {
           type="button"
           onClick={reset}
           disabled={isAtStart}
-          className="rounded-md border border-[var(--color-border)] px-2.5 py-1.5 text-sm disabled:opacity-40 hover:bg-[var(--color-surface-muted)]"
+          className="rounded-md border border-[var(--color-border)] px-2.5 py-1.5 text-sm transition-all hover:bg-[var(--color-surface-muted)] active:scale-95 disabled:opacity-30 disabled:active:scale-100"
           aria-label="Reiniciar"
         >
           ⏮
@@ -62,7 +62,7 @@ export function VisualizerControls<TState>({ visualizer }: Props<TState>) {
           type="button"
           onClick={stepBack}
           disabled={isAtStart}
-          className="rounded-md border border-[var(--color-border)] px-2.5 py-1.5 text-sm disabled:opacity-40 hover:bg-[var(--color-surface-muted)]"
+          className="rounded-md border border-[var(--color-border)] px-2.5 py-1.5 text-sm transition-all hover:bg-[var(--color-surface-muted)] active:scale-95 disabled:opacity-30 disabled:active:scale-100"
           aria-label="Passo anterior"
         >
           ◀
@@ -71,7 +71,7 @@ export function VisualizerControls<TState>({ visualizer }: Props<TState>) {
           type="button"
           onClick={isPlaying ? pause : play}
           disabled={totalFrames === 0}
-          className="rounded-md bg-[var(--color-primary)] px-4 py-1.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-40"
+          className="rounded-md bg-[var(--color-primary)] px-4 py-1.5 text-sm font-medium text-[#1a1206] shadow-[0_4px_16px_-4px_var(--color-primary-soft)] transition-all hover:bg-[var(--color-primary-hover)] hover:shadow-[0_6px_20px_-4px_rgba(217,164,65,0.45)] active:scale-95 disabled:opacity-30 disabled:active:scale-100"
           aria-label={isPlaying ? "Pausar" : "Reproduzir"}
         >
           {isPlaying ? "⏸ Pausar" : "▶ Reproduzir"}
@@ -80,7 +80,7 @@ export function VisualizerControls<TState>({ visualizer }: Props<TState>) {
           type="button"
           onClick={stepForward}
           disabled={isAtEnd}
-          className="rounded-md border border-[var(--color-border)] px-2.5 py-1.5 text-sm disabled:opacity-40 hover:bg-[var(--color-surface-muted)]"
+          className="rounded-md border border-[var(--color-border)] px-2.5 py-1.5 text-sm transition-all hover:bg-[var(--color-surface-muted)] active:scale-95 disabled:opacity-30 disabled:active:scale-100"
           aria-label="Próximo passo"
         >
           ▶|

@@ -1,22 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f8fb;
-  --foreground: #14171f;
-  --color-primary: #4f46e5;
-  --color-primary-hover: #4338ca;
-  --color-accent: #06b6d4;
-  --color-surface: #ffffff;
-  --color-surface-muted: #eef0f6;
-  --color-border: #e2e5ee;
-  --color-muted: #565c6d;
+  /* base: grafite escuro com leve matiz fria, nunca preto puro */
+  --background: #0a0b0e;
+  --background-elevated: #101218;
+  --foreground: #f2f1ec;
+  --color-muted: #94989f;
 
-  /* cores semânticas usadas nas animações - consistentes em todos os tópicos */
-  --color-highlight-compare: #f59e0b; /* comparando */
-  --color-highlight-visit: #3b82f6; /* visitado / ponteiro atual */
-  --color-highlight-success: #22c55e; /* encontrado / sucesso */
-  --color-highlight-danger: #ef4444; /* removendo / erro */
-  --color-highlight-new: #a855f7; /* recém-inserido */
+  /* acento único: dourado envelhecido, nada de indigo/roxo genérico */
+  --color-primary: #d9a441;
+  --color-primary-hover: #c4922f;
+  --color-primary-soft: rgba(217, 164, 65, 0.14);
+
+  --color-surface: #14161b;
+  --color-surface-muted: #1a1d24;
+  --color-border: #262a33;
+  --color-border-strong: #33384433;
+
+  /* sombra com matiz quente, não preto puro */
+  --shadow-color: 20, 14, 4;
+
+  /* cores semânticas das animações: famílias de matiz distintas entre si e do dourado principal */
+  --color-highlight-compare: #6ea8dc; /* comparando: azul aço */
+  --color-highlight-visit: #9c8cd9; /* visitado / ponteiro atual: violeta suave */
+  --color-highlight-success: #5cb787; /* encontrado / sucesso: verde-jade */
+  --color-highlight-danger: #d97066; /* removendo / erro: terracota */
+  --color-highlight-new: #d688af; /* recém-inserido: rosa empoeirado */
 }
 
 @theme inline {
@@ -26,21 +35,54 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0b0d12;
-    --foreground: #eef0f6;
-    --color-surface: #151822;
-    --color-surface-muted: #1c202c;
-    --color-border: #262b3a;
-    --color-muted: #9aa1b4;
-  }
-}
-
 body {
-  background: var(--background);
+  background:
+    radial-gradient(ellipse 900px 500px at 15% -10%, var(--color-primary-soft), transparent),
+    var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  min-height: 100dvh;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+  letter-spacing: -0.02em;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* textura sutil para quebrar a chapadura de um fundo escuro liso */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.glass-panel {
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--color-border);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
+    0 12px 30px -12px rgba(var(--shadow-color), 0.55);
+}
+
+.glow-on-hover {
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+
+.glow-on-hover:hover {
+  border-color: color-mix(in srgb, var(--color-primary) 55%, var(--color-border));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-primary) 25%, transparent),
+    0 16px 36px -14px rgba(var(--shadow-color), 0.6);
+  transform: translateY(-2px);
 }
 
 @media (prefers-reduced-motion: reduce) {

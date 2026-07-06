@@ -24,7 +24,7 @@ export function QuizRunner({ questions }: Props) {
   return (
     <div className="flex flex-col gap-6">
       {answeredCount === questions.length && questions.length > 0 && (
-        <div className="rounded-lg border border-[var(--color-primary)] bg-[var(--color-primary)]/10 px-4 py-3 text-sm font-medium">
+        <div className="rounded-xl border border-[var(--color-primary)] bg-[var(--color-primary-soft)] px-4 py-3 text-sm font-medium">
           Você acertou {correctCount} de {questions.length} questões.
         </div>
       )}
@@ -32,10 +32,7 @@ export function QuizRunner({ questions }: Props) {
       {questions.map((q, qIndex) => {
         const answered = answers[q.id];
         return (
-          <div
-            key={q.id}
-            className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4"
-          >
+          <div key={q.id} className="glass-panel rounded-2xl p-4">
             <p className="mb-3 font-medium">
               {qIndex + 1}. {q.enunciado}
             </p>
@@ -51,11 +48,12 @@ export function QuizRunner({ questions }: Props) {
                     onClick={() => handleAnswer(q.id, i)}
                     disabled={showFeedback}
                     className={clsx(
-                      "rounded-md border px-3 py-2 text-left text-sm transition-colors",
-                      !showFeedback && "border-[var(--color-border)] hover:bg-[var(--color-surface-muted)]",
+                      "rounded-md border px-3 py-2 text-left text-sm transition-all",
+                      !showFeedback &&
+                        "border-[var(--color-border)] hover:bg-[var(--color-surface-muted)] active:scale-[0.99]",
                       showFeedback && isCorrectOption && "border-[var(--color-highlight-success)] bg-[var(--color-highlight-success)]/10",
                       showFeedback && isSelected && !isCorrectOption && "border-[var(--color-highlight-danger)] bg-[var(--color-highlight-danger)]/10",
-                      showFeedback && !isSelected && !isCorrectOption && "border-[var(--color-border)] opacity-60"
+                      showFeedback && !isSelected && !isCorrectOption && "border-[var(--color-border)] opacity-50"
                     )}
                   >
                     {opcao}
