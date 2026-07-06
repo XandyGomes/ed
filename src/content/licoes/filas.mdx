@@ -1,0 +1,27 @@
+# Filas (Queue)
+
+Uma **fila** é uma estrutura **FIFO** — *First In, First Out*: o primeiro
+elemento a entrar é o primeiro a sair. Pense em uma fila de banco: quem
+chega primeiro é atendido primeiro.
+
+## Operações principais
+
+- **enqueue(valor)** — adiciona um elemento no final (trás) da fila. O(1).
+- **dequeue()** — remove e retorna o elemento da frente da fila. O(1).
+
+Diferente da pilha, a fila mexe em **duas pontas diferentes**: inserção no
+final, remoção no início.
+
+## Onde filas aparecem na prática
+
+- Fila de impressão de documentos.
+- Fila de tarefas em processamento (ex: pedidos de um restaurante).
+- Algoritmo de **busca em largura (BFS)** em grafos e árvores usa uma fila
+  internamente.
+- Buffers de streaming de dados.
+
+## Experimente
+
+Use `enqueue` e `dequeue` na aba **Visualização** e observe os rótulos
+**frente** e **trás** se movendo conforme os elementos entram pelo final e
+saem pelo início.

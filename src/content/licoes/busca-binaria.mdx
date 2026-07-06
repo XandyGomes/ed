@@ -1,0 +1,42 @@
+# Busca Binária
+
+A **busca binária** é uma técnica muito mais eficiente que a busca
+sequencial, mas exige uma condição importante: **o array precisa estar
+ordenado**.
+
+## A ideia
+
+A cada passo, comparamos o valor procurado com o elemento do **meio** do
+intervalo atual:
+
+- Se forem iguais, encontramos o valor.
+- Se o valor procurado for **menor**, ele só pode estar na metade
+  **esquerda** — descartamos a direita.
+- Se for **maior**, ele só pode estar na metade **direita** — descartamos
+  a esquerda.
+
+Repetimos isso, reduzindo o intervalo pela metade a cada passo, até
+encontrar o valor ou o intervalo ficar vazio.
+
+## Algoritmo
+
+```
+baixo = 0, alto = n - 1
+enquanto baixo <= alto:
+    meio = (baixo + alto) / 2
+    se array[meio] == alvo: retorne meio
+    senão se array[meio] < alvo: baixo = meio + 1
+    senão: alto = meio - 1
+retorne "não encontrado"
+```
+
+## Complexidade
+
+Como descartamos metade dos elementos restantes a cada passo, o número de
+passos necessários é **O(log n)** — para um array de 1 milhão de
+elementos, no máximo ~20 comparações!
+
+## Experimente
+
+Na aba **Visualização**, observe os ponteiros `baixo`, `meio` e `alto` se
+movendo a cada passo, e como o intervalo de busca diminui rapidamente.

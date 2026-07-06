@@ -1,0 +1,30 @@
+# Deque (Fila de Duas Pontas)
+
+Um **deque** (*double-ended queue*) generaliza pilha e fila: permite
+**inserir e remover nas duas extremidades** — frente e final — todas em
+O(1).
+
+## Operações principais
+
+- **inserir na frente**
+- **inserir no final**
+- **remover da frente**
+- **remover do final**
+
+## Por que isso é útil?
+
+Um deque pode se comportar como pilha (usando só uma ponta) ou como fila
+(inserindo em uma ponta e removendo na outra), sem abrir mão da
+flexibilidade de mexer nas duas pontas quando necessário.
+
+## Onde deques aparecem na prática
+
+- Implementação de **undo/redo** com navegação nos dois sentidos.
+- **Sliding window** em algoritmos de array (ex: máximo em janela deslizante).
+- Escalonadores de tarefas que permitem inserir tarefas prioritárias na
+  frente e tarefas normais no final.
+
+## Experimente
+
+Na aba **Visualização**, teste inserir e remover tanto na frente quanto no
+final, e observe como os ponteiros **frente** e **trás** se ajustam.
