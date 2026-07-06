@@ -1,0 +1,55 @@
+# Listas Ligadas
+
+Uma **lista ligada** (linked list) é uma sequência de **nós**, onde cada nó
+guarda um valor e um **ponteiro** para o próximo nó. Diferente do array,
+os nós não precisam ficar em posições contíguas de memória: eles podem
+estar espalhados, conectados apenas pelos ponteiros.
+
+## Estrutura de um nó
+
+```
+nó = { valor, próximo }
+```
+
+A lista mantém apenas um ponteiro especial: a **cabeça** (head), que
+aponta para o primeiro nó. O último nó aponta para `NULL`, indicando o
+fim da lista.
+
+## Por que inserir no início é O(1)?
+
+Para inserir um novo nó no início, basta:
+
+1. Criar o novo nó apontando para o antigo primeiro nó.
+2. Mover a cabeça para apontar para o novo nó.
+
+Nenhum outro nó precisa se mover! Isso é uma grande vantagem sobre o
+array, onde inserir no início exige deslocar todos os elementos.
+
+## Por que inserir no final é O(n) (sem ponteiro de cauda)?
+
+Sem guardar uma referência para o último nó, a única forma de chegar até
+ele é **percorrer a lista inteira**, nó por nó, seguindo os ponteiros
+`próximo`, até encontrar aquele que aponta para `NULL`.
+
+## Busca também é O(n)
+
+Assim como no array, buscar um valor exige percorrer os nós um a um, mas
+aqui não é possível "pular" para o meio como na busca binária: para
+chegar ao nó 5, é preciso primeiro passar pelos nós 1 a 4.
+
+## Trade-offs em relação ao array
+
+| Operação | Array | Lista Ligada |
+|---|---|---|
+| Acesso por índice | O(1) | O(n) |
+| Inserir no início | O(n) | O(1) |
+| Inserir no final | O(1)* | O(n) |
+| Busca | O(n) | O(n) |
+
+*Sem espaço reservado, inserir no final do array também pode custar O(n)
+por realocação, mas na prática costuma ser O(1) amortizado.
+
+## Experimente
+
+Na aba **Visualização**, teste inserir no início (rápido) e no final
+(observe o ponteiro **atual** percorrendo cada nó até o fim).

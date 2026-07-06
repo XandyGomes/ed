@@ -1,16 +1,16 @@
 # Pilhas (Stack)
 
-Uma **pilha** é uma estrutura de dados **LIFO** — *Last In, First Out*: o
+Uma **pilha** é uma estrutura de dados **LIFO**, *Last In, First Out*: o
 último elemento a entrar é o primeiro a sair. Pense em uma pilha de
 pratos: você só pode adicionar ou remover pelo topo.
 
 ## Operações principais
 
-- **push(valor)** — adiciona um elemento no topo. O(1).
-- **pop()** — remove e retorna o elemento do topo. O(1).
-- **peek()** — consulta o elemento do topo, sem remover. O(1).
+- **push(valor)**: adiciona um elemento no topo. O(1).
+- **pop()**: remove e retorna o elemento do topo. O(1).
+- **peek()**: consulta o elemento do topo, sem remover. O(1).
 
-Todas as operações são O(1) porque só mexemos em uma ponta da estrutura —
+Todas as operações são O(1) porque só mexemos em uma ponta da estrutura:
 não é preciso deslocar nenhum outro elemento.
 
 ## Onde pilhas aparecem na prática
@@ -18,12 +18,12 @@ não é preciso deslocar nenhum outro elemento.
 - O botão **"Voltar"** do navegador.
 - **Desfazer (Ctrl+Z)** em editores de texto.
 - A **pilha de chamadas** (call stack) de funções em qualquer linguagem de
-  programação — cada chamada de função empilha um novo quadro.
+  programação, cada chamada de função empilha um novo quadro.
 - Verificação de parênteses/colchetes balanceados em compiladores.
 
 ## Cuidado com a pilha vazia
 
-Tentar fazer `pop()` ou `peek()` em uma pilha vazia é um erro — não existe
+Tentar fazer `pop()` ou `peek()` em uma pilha vazia é um erro, não existe
 "topo" para consultar. Experimente isso na aba **Visualização**: esvazie a
 pilha e tente desempilhar de novo.
 

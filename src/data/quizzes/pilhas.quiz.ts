@@ -18,7 +18,7 @@ export const quiz: QuizQuestion[] = [
   {
     id: "q3",
     enunciado: "O que acontece ao chamar pop() em uma pilha vazia?",
-    opcoes: ["Retorna 0", "É uma operação inválida — não há topo para remover", "Cria um novo elemento", "Remove o elemento mais antigo"],
+    opcoes: ["Retorna 0", "É uma operação inválida, não há topo para remover", "Cria um novo elemento", "Remove o elemento mais antigo"],
     correta: 1,
     explicacao: "Não existe elemento no topo de uma pilha vazia, então pop() e peek() não podem ser executados.",
   },

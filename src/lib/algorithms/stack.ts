@@ -25,7 +25,7 @@ export function stackPush(state: ArrayState, value: number): OperationResult<Arr
 
 export function stackPop(state: ArrayState): OperationResult<ArrayState> {
   if (state.items.length === 0) {
-    return { ok: false, error: "A pilha está vazia — não há o que desempilhar." };
+    return { ok: false, error: "A pilha está vazia, não há o que desempilhar." };
   }
   const top = state.items[state.items.length - 1];
   const nextState = cloneArrayState(state);
@@ -54,7 +54,7 @@ export function stackPop(state: ArrayState): OperationResult<ArrayState> {
 
 export function stackPeek(state: ArrayState): OperationResult<ArrayState> {
   if (state.items.length === 0) {
-    return { ok: false, error: "A pilha está vazia — não há topo para consultar." };
+    return { ok: false, error: "A pilha está vazia, não há topo para consultar." };
   }
   const top = state.items[state.items.length - 1];
   const frames: FrameSequence<ArrayState> = [

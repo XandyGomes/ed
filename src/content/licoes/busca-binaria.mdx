@@ -11,8 +11,8 @@ intervalo atual:
 
 - Se forem iguais, encontramos o valor.
 - Se o valor procurado for **menor**, ele só pode estar na metade
-  **esquerda** — descartamos a direita.
-- Se for **maior**, ele só pode estar na metade **direita** — descartamos
+  **esquerda**, descartamos a direita.
+- Se for **maior**, ele só pode estar na metade **direita**, descartamos
   a esquerda.
 
 Repetimos isso, reduzindo o intervalo pela metade a cada passo, até
@@ -33,7 +33,7 @@ retorne "não encontrado"
 ## Complexidade
 
 Como descartamos metade dos elementos restantes a cada passo, o número de
-passos necessários é **O(log n)** — para um array de 1 milhão de
+passos necessários é **O(log n)**, para um array de 1 milhão de
 elementos, no máximo ~20 comparações!
 
 ## Experimente

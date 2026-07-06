@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Estrutura de Dados — Aulas Interativas",
+  title: "Estrutura de Dados: Aulas Interativas",
   description:
     "Lições, animações interativas e exercícios de Estrutura de Dados em português.",
 };
