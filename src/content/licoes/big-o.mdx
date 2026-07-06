@@ -1,0 +1,33 @@
+# Big-O e Complexidade
+
+Quando escrevemos um algoritmo, além de fazê-lo funcionar corretamente,
+precisamos entender **quão rápido** ele é e **quanta memória** ele consome
+à medida que o tamanho da entrada (`n`) cresce. É isso que a notação
+**Big-O** descreve.
+
+## Por que não medir em segundos?
+
+O tempo real depende do computador, da linguagem, da carga da máquina. O
+que queremos é uma medida **independente de hardware**: quantas operações
+"básicas" o algoritmo executa em função de `n`. Big-O descreve o
+**crescimento assintótico** — o que acontece quando `n` fica muito grande.
+
+## As complexidades mais comuns
+
+- **O(1)** — tempo constante. Ex: acessar `array[i]`.
+- **O(log n)** — divide o problema pela metade a cada passo. Ex: busca binária.
+- **O(n)** — percorre a entrada uma vez. Ex: busca sequencial.
+- **O(n log n)** — Ex: bons algoritmos de ordenação (merge sort, quick sort).
+- **O(n²)** — laços aninhados sobre a mesma entrada. Ex: bubble sort ingênuo.
+
+## A intuição mais importante
+
+Para `n` pequeno, a diferença entre essas complexidades quase não importa.
+Mas conforme `n` cresce, O(n²) explode muito mais rápido que O(n log n), que
+por sua vez cresce muito mais rápido que O(n). Use o gráfico interativo na
+aba **Visualização** para sentir isso na prática: mova o controle de `n` e
+veja o número de operações de cada curva.
+
+> **Dica didática:** quando for analisar um algoritmo, procure primeiro os
+> laços (`for`/`while`). Um laço simples sobre `n` elementos costuma ser
+> O(n). Um laço dentro de outro laço, ambos sobre `n`, costuma ser O(n²).

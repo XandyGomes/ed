@@ -1,0 +1,31 @@
+# Arrays
+
+Um **array** (vetor) é uma coleção de elementos armazenados em posições de
+memória **contíguas**, acessados por um **índice** numérico começando em 0.
+
+## Por que o acesso é O(1)?
+
+Como os elementos ficam lado a lado na memória, o endereço de qualquer
+posição pode ser calculado diretamente:
+
+```
+endereço(i) = endereço_inicial + i * tamanho_do_elemento
+```
+
+Não é preciso percorrer nada — é matemática pura. Por isso `array[i]` é
+**O(1)**, tempo constante, independente do tamanho do array.
+
+## Inserção e remoção
+
+Inserir ou remover um elemento **no meio** do array exige deslocar todos os
+elementos seguintes uma posição, para manter a contiguidade. Isso é
+**O(n)** no pior caso. Inserir ou remover **no final** costuma ser O(1),
+já que nenhum outro elemento precisa se mover.
+
+## Experimente
+
+Vá para a aba **Visualização** e teste:
+
+1. **Acessar por índice** — observe que o acesso é imediato.
+2. **Inserir na posição** — veja os elementos seguintes se deslocarem.
+3. **Remover da posição** — veja o "buraco" sendo fechado.

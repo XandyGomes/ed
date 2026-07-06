@@ -1,0 +1,42 @@
+import { notFound } from "next/navigation";
+import { topicosDisponiveis, getTopico } from "@/data/topicos";
+import { TopicTabs } from "@/components/layout/TopicTabs";
+import { QuizRunner } from "@/components/quiz/QuizRunner";
+
+export function generateStaticParams() {
+  return topicosDisponiveis.map((t) => ({ topico: t.slug }));
+}
+
+export const dynamicParams = false;
+
+export default async function TopicoPage({
+  params,
+}: {
+  params: Promise<{ topico: string }>;
+}) {
+  const { topico: slug } = await params;
+  const topico = getTopico(slug);
+  if (!topico || topico.status !== "disponivel") notFound();
+
+  const [{ default: Licao }, { default: Visualizacao }, { quiz }] = await Promise.all([
+    import(`@/content/licoes/${slug}.mdx`),
+    import(`@/components/visualizacoes/${slug}`),
+    import(`@/data/quizzes/${slug}.quiz`),
+  ]);
+
+  return (
+    <div className="mx-auto max-w-3xl px-4 py-10">
+      <p className="mb-1 text-sm font-medium text-[var(--color-primary)]">
+        Estrutura de Dados
+      </p>
+      <h1 className="mb-2 text-3xl font-bold tracking-tight">{topico.titulo}</h1>
+      <p className="mb-8 text-[var(--color-muted)]">{topico.descricao}</p>
+
+      <TopicTabs
+        licao={<Licao />}
+        visualizacao={<Visualizacao />}
+        pratica={<QuizRunner questions={quiz} />}
+      />
+    </div>
+  );
+}
