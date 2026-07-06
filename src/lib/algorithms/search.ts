@@ -30,7 +30,7 @@ export function linearSearch(state: ArrayState, target: number): OperationResult
   frames.push({
     id: frames.length,
     state,
-    narration: `Valor ${target} não encontrado. Percorremos todos os ${state.items.length} elementos — pior caso O(n).`,
+    narration: `Valor ${target} não encontrado. Percorremos todos os ${state.items.length} elementos, pior caso O(n).`,
   });
   return { ok: true, frames, nextState: state };
 }
@@ -107,7 +107,7 @@ export function binarySearch(state: ArrayState, target: number): OperationResult
   frames.push({
     id: frames.length,
     state,
-    narration: `Valor ${target} não encontrado. A cada passo eliminamos metade do array — O(log n).`,
+    narration: `Valor ${target} não encontrado. A cada passo eliminamos metade do array, O(log n).`,
   });
   return { ok: true, frames, nextState: state };
 }

@@ -3,11 +3,11 @@ import clsx from "clsx";
 import { topicos } from "@/data/topicos";
 
 const FASE_LABEL: Record<number, string> = {
-  1: "Fase 1 — Fundamentos e estruturas lineares",
-  2: "Fase 2 — Estruturas ligadas",
-  3: "Fase 3 — Árvores",
-  4: "Fase 4 — Tabelas hash",
-  5: "Fase 5 — Grafos",
+  1: "Fase 1, Fundamentos e estruturas lineares",
+  2: "Fase 2, Estruturas ligadas",
+  3: "Fase 3, Árvores",
+  4: "Fase 4, Tabelas hash",
+  5: "Fase 5, Grafos",
 };
 
 export default function Home() {
@@ -24,7 +24,7 @@ export default function Home() {
         </h1>
         <p className="mx-auto max-w-2xl text-[var(--color-muted)]">
           Lições curtas, visualizações interativas passo a passo e exercícios
-          práticos — em português, para acompanhar as aulas.
+          práticos, em português, para acompanhar as aulas.
         </p>
       </section>
 

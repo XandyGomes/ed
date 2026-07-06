@@ -32,14 +32,14 @@ export const topicos: TopicDef[] = [
   {
     slug: "pilhas",
     titulo: "Pilhas (Stack)",
-    descricao: "Last In, First Out — push, pop e peek.",
+    descricao: "Last In, First Out: push, pop e peek.",
     fase: 1,
     status: "disponivel",
   },
   {
     slug: "filas",
     titulo: "Filas (Queue)",
-    descricao: "First In, First Out — enqueue e dequeue.",
+    descricao: "First In, First Out: enqueue e dequeue.",
     fase: 1,
     status: "disponivel",
   },
@@ -53,16 +53,16 @@ export const topicos: TopicDef[] = [
   {
     slug: "listas-ligadas",
     titulo: "Listas Ligadas",
-    descricao: "Nós conectados por ponteiros — inserir, remover, buscar.",
+    descricao: "Nós conectados por ponteiros: inserir, remover, buscar.",
     fase: 2,
-    status: "em-breve",
+    status: "disponivel",
   },
   {
     slug: "listas-duplamente-encadeadas",
     titulo: "Listas Duplamente Encadeadas",
     descricao: "Ponteiros para os dois vizinhos: anterior e próximo.",
     fase: 2,
-    status: "em-breve",
+    status: "disponivel",
   },
   {
     slug: "arvores-binarias",

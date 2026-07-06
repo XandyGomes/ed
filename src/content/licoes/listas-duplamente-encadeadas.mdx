@@ -1,0 +1,52 @@
+# Listas Duplamente Encadeadas
+
+Uma **lista duplamente encadeada** é como a lista ligada simples, mas cada
+nó guarda **dois** ponteiros: `next` (próximo) e `prev` (anterior). A
+lista também mantém dois ponteiros especiais: **cabeça** (head) e
+**cauda** (tail).
+
+## Estrutura de um nó
+
+```
+nó = { valor, anterior, próximo }
+```
+
+## A grande vantagem: navegação nos dois sentidos
+
+Com o ponteiro `prev`, é possível percorrer a lista de trás para frente,
+o que não é possível na lista simples. Isso viabiliza operações como
+"desfazer" (voltar ao nó anterior) sem precisar reiniciar do início.
+
+## Por que remover do final vira O(1)?
+
+Na lista simples, remover o último nó exige **percorrer a lista inteira**
+para achar o penúltimo nó (o novo último). Na lista duplamente encadeada,
+o próprio nó cauda já tem um ponteiro `prev` apontando para o penúltimo
+nó, então conseguimos "pular" direto para ele. Basta:
+
+1. Acessar `cauda.prev` para achar o novo último nó.
+2. Fazer `novo_ultimo.next = NULL`.
+3. Mover a cauda para `novo_ultimo`.
+
+Nenhuma travessia é necessária!
+
+## O custo dessa vantagem
+
+Cada nó agora ocupa mais memória (um ponteiro extra), e toda operação de
+inserir/remover precisa atualizar **dois** ponteiros em vez de um. Ainda
+assim, é O(1), só um pouco mais de trabalho constante.
+
+## Comparando as três listas
+
+| Operação | Lista Simples | Lista Dupla |
+|---|---|---|
+| Inserir no início | O(1) | O(1) |
+| Inserir no final | O(n) | O(1) |
+| Remover do início | O(1) | O(1) |
+| Remover do final | O(n) | O(1) |
+| Percorrer ao contrário | Não é possível | O(n) |
+
+## Experimente
+
+Na aba **Visualização**, remova do final e compare a narração com a da
+lista simples: aqui não há travessia, é direto ao ponto.

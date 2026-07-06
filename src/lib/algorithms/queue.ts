@@ -25,7 +25,7 @@ export function queueEnqueue(state: ArrayState, value: number): OperationResult<
 
 export function queueDequeue(state: ArrayState): OperationResult<ArrayState> {
   if (state.items.length === 0) {
-    return { ok: false, error: "A fila está vazia — não há o que desenfileirar." };
+    return { ok: false, error: "A fila está vazia, não há o que desenfileirar." };
   }
   const front = state.items[0];
   const nextState = cloneArrayState(state);
