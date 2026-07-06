@@ -1,0 +1,58 @@
+# Tabelas Hash
+
+Uma **tabela hash** (hash table / hash map) permite associar valores a
+"posições" (buckets) usando uma **função de hash**, alcançando busca,
+inserção e remoção em **O(1) em média**, muito mais rápido que percorrer
+uma lista ou até que uma árvore balanceada.
+
+## A função de hash
+
+Uma função de hash transforma um valor em um índice dentro dos limites
+do array de buckets. A versão mais simples para números inteiros:
+
+```
+hash(valor) = valor % capacidade
+```
+
+Por exemplo, com capacidade 7: `hash(17) = 17 % 7 = 3`.
+
+Uma boa função de hash distribui os valores **uniformemente** entre os
+buckets, evitando que muitos valores caiam no mesmo lugar.
+
+## Colisões
+
+Duas chaves diferentes podem produzir o mesmo índice: isso é uma
+**colisão**. Por exemplo, com capacidade 7, tanto `17 % 7` quanto
+`10 % 7` valem 3.
+
+A estratégia usada aqui para resolver colisões é o **encadeamento**
+(chaining): cada bucket guarda uma **lista** de itens. Quando ocorre uma
+colisão, o novo item é simplesmente adicionado ao final da lista daquele
+bucket.
+
+## Complexidade
+
+- **Caso médio**: O(1) para inserir, buscar e remover, assumindo poucas
+  colisões (boa função de hash e tabela não muito cheia).
+- **Pior caso**: O(n), se todos os valores colidirem no mesmo bucket,
+  a tabela degenera em uma única lista ligada.
+
+## Fator de carga
+
+O **fator de carga** é a razão entre o número de itens armazenados e o
+número de buckets. Quando esse fator fica muito alto (muitos itens por
+bucket), a tabela deveria ser **redimensionada** (rehashing): criar um
+array de buckets maior e reinserir todos os itens. Isso mantém as
+operações próximas de O(1) mesmo com a tabela crescendo.
+
+## Onde tabelas hash aparecem na prática
+
+- `dict` em Python, `Map`/objetos em JavaScript, `HashMap` em Java.
+- Cache de dados (ex: memoização).
+- Verificação rápida de duplicatas ou pertencimento a um conjunto.
+
+## Experimente
+
+Insira valores que colidem no mesmo bucket (com capacidade 7, tente 5 e
+12, ou 10 e 17) e observe a cadeia crescendo. Depois busque e remova,
+observando a travessia dentro da cadeia.
