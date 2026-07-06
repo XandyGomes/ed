@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import type { ArrayState, Highlight } from "@/lib/types";
 import { colorForHighlight } from "@/lib/highlightColor";
 
@@ -23,37 +23,34 @@ export function QueueRenderer({ state, highlights, pointers }: Props) {
       <div className="flex items-center gap-4 rounded-lg border-2 border-dashed border-[var(--color-border)] px-6 py-4">
         <span className="text-xs font-semibold text-[var(--color-muted)]">entrada ▶</span>
         <div className="flex items-end gap-3">
-          <AnimatePresence initial={false}>
-            {state.items.map((item) => {
-              const color = colorForHighlight(highlights, item.id);
-              const labels = pointerLabelsFor(pointers, item.id);
-              return (
+          {state.items.map((item) => {
+            const color = colorForHighlight(highlights, item.id);
+            const labels = pointerLabelsFor(pointers, item.id);
+            return (
+              <motion.div
+                key={item.id}
+                layout
+                initial={{ opacity: 0, scale: 0.6, x: 20 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                className="flex flex-col items-center gap-1"
+              >
+                {labels.length > 0 && (
+                  <div className="text-xs font-semibold text-[var(--color-primary)]">
+                    {labels.join(" / ")}
+                  </div>
+                )}
                 <motion.div
-                  key={item.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.6, x: 20 }}
-                  animate={{ opacity: 1, scale: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.6, x: -20 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  className="flex flex-col items-center gap-1"
+                  animate={{ backgroundColor: color ?? "var(--color-surface)" }}
+                  transition={{ duration: 0.25 }}
+                  className="flex h-14 w-14 items-center justify-center rounded-lg border-2 border-[var(--color-border)] font-mono text-lg font-semibold"
+                  style={{ color: color ? "#fff" : "var(--color-foreground)" }}
                 >
-                  {labels.length > 0 && (
-                    <div className="text-xs font-semibold text-[var(--color-primary)]">
-                      {labels.join(" / ")}
-                    </div>
-                  )}
-                  <motion.div
-                    animate={{ backgroundColor: color ?? "var(--color-surface)" }}
-                    transition={{ duration: 0.25 }}
-                    className="flex h-14 w-14 items-center justify-center rounded-lg border-2 border-[var(--color-border)] font-mono text-lg font-semibold"
-                    style={{ color: color ? "#fff" : "var(--color-foreground)" }}
-                  >
-                    {item.value}
-                  </motion.div>
+                  {item.value}
                 </motion.div>
-              );
-            })}
-          </AnimatePresence>
+              </motion.div>
+            );
+          })}
           {state.items.length === 0 && (
             <p className="px-6 text-sm text-[var(--color-muted)]">Fila vazia.</p>
           )}

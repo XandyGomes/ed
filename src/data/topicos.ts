@@ -90,7 +90,7 @@ export const topicos: TopicDef[] = [
     titulo: "Tabelas Hash",
     descricao: "Funções de hash, colisões e encadeamento.",
     fase: 4,
-    status: "em-breve",
+    status: "disponivel",
   },
   {
     slug: "grafos",
