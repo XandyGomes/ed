@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { topicosDisponiveis, getTopico } from "@/data/topicos";
 import { TopicTabs } from "@/components/layout/TopicTabs";
 import { QuizRunner } from "@/components/quiz/QuizRunner";
+import { basePath } from "@/lib/basePath";
 
 export function generateStaticParams() {
   return topicosDisponiveis.map((t) => ({ topico: t.slug }));
@@ -42,7 +43,7 @@ export default async function TopicoPage({
       <div className="mb-8 flex flex-wrap gap-2">
         {topico.pdf && (
           <a
-            href={topico.pdf}
+            href={`${basePath}${topico.pdf}`}
             download
             className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] px-3 py-1.5 text-xs font-medium text-[var(--color-muted)] transition-colors hover:border-[var(--color-primary)] hover:text-[var(--color-foreground)]"
           >
