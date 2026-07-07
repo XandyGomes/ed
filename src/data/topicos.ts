@@ -2,6 +2,14 @@ import type { TopicDef } from "@/lib/types";
 
 export const topicos: TopicDef[] = [
   {
+    slug: "objetos-e-classes",
+    titulo: "Objetos e Classes",
+    descricao: "Tipo Abstrato de Dados, encapsulamento e a base de toda estrutura que vem a seguir.",
+    fase: 1,
+    status: "disponivel",
+    pdf: "/pdfs/objetos-e-classes.pdf",
+  },
+  {
     slug: "big-o",
     titulo: "Big-O e Complexidade",
     descricao: "Como medir e comparar a eficiência de algoritmos.",

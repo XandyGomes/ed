@@ -1,6 +1,24 @@
 import type { MDXComponents } from "mdx/types";
+import { basePath } from "@/lib/basePath";
 
 const components: MDXComponents = {
+  img: ({ src, alt, ...props }) => {
+    const resolvedSrc = typeof src === "string" && src.startsWith("/") ? `${basePath}${src}` : src;
+    return (
+      <span className="mb-4 block">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={resolvedSrc}
+          alt={alt ?? ""}
+          className="mx-auto rounded-xl border border-[var(--color-border)]"
+          {...props}
+        />
+        {alt && (
+          <span className="mt-1.5 block text-center text-xs text-[var(--color-muted)]">{alt}</span>
+        )}
+      </span>
+    );
+  },
   h1: (props) => (
     <h1 className="mt-2 mb-4 text-3xl font-semibold tracking-tight" {...props} />
   ),

@@ -1,0 +1,95 @@
+# Objetos e Classes
+
+Antes de estudar listas, pilhas ou árvores, vale entender uma pergunta mais
+básica: como garantir que um dado, dentro do código, sempre tem a forma
+certa? É essa pergunta que leva ao conceito de **Tipo Abstrato de Dados**
+(TAD): uma estrutura definida não só pelos dados que guarda, mas pelas
+**operações válidas** sobre esses dados e pelas **regras** que eles precisam
+respeitar.
+
+## O problema do objeto livre
+
+Em JavaScript, é possível criar qualquer objeto, sem nenhuma garantia sobre
+o que ele contém:
+
+```js
+let forma = {
+  base: 'batata',
+  altura: 'cebola',
+  tipo: 'Z'
+}
+```
+
+Nada impede isso. Uma função que espera calcular a área dessa forma só vai
+descobrir o problema **quando tentar usar os dados**, longe de onde o
+objeto foi criado, o que torna o erro difícil de rastrear.
+
+## A solução: encapsular numa classe
+
+Uma **classe** define o "molde" de um objeto: quais atributos ele tem, e
+que regras esses atributos precisam seguir para o objeto ser válido. A
+analogia clássica é a forma de assar (a assadeira): não importa a receita,
+tudo que sai dela tem o mesmo formato.
+
+```js
+class FormaGeometrica {
+  #base
+  #altura
+  #tipo
+
+  constructor(base, altura, tipo) {
+    this.base = base     // chama o setter, que valida
+    this.altura = altura
+    this.tipo = tipo
+  }
+
+  set base(valor) {
+    if (typeof valor !== 'number' || valor <= 0) {
+      throw new Error('ERRO: a base precisa ser numérica e maior que zero.')
+    }
+    this.#base = valor
+  }
+
+  get base() { return this.#base }
+
+  get area() {
+    switch (this.tipo) {
+      case 'R': return this.base * this.altura
+      case 'T': return this.base * this.altura / 2
+      case 'E': return (this.base / 2) * (this.altura / 2) * Math.PI
+    }
+  }
+}
+```
+
+## Encapsulamento, atributos e propriedades
+
+- **Atributo privado** (`#base`): só pode ser lido ou alterado de dentro da
+  própria classe. Em JavaScript, o nome começa com `#`.
+- **Getter**: um método que expõe o valor de um atributo privado para fora
+  da classe, sem permitir alterá-lo diretamente.
+- **Setter**: um método que permite alterar um atributo privado **passando
+  por uma validação** antes de aceitar o novo valor.
+- **Propriedade**: o nome pelo qual getter e setter são acessados de fora,
+  como se fossem um atributo comum (`forma.base`, sem parênteses).
+
+Esse conjunto (atributos privados + getters/setters que validam) é o que
+chamamos de **encapsulamento**: os dados internos do objeto ficam
+protegidos, e só podem mudar de formas que a própria classe considera
+válidas.
+
+## Por que isso importa para Estrutura de Dados
+
+Toda estrutura que vem a seguir (pilha, fila, lista, árvore) é, na
+prática, uma classe: ela define quais operações existem (`push`, `pop`,
+`enqueue`...) e garante certas propriedades sempre verdadeiras (uma pilha
+nunca desempilha um item que não foi empilhado, por exemplo). Entender
+classes é entender a base sobre a qual todas as próximas estruturas são
+construídas.
+
+## Experimente
+
+Preencha base, altura e tipo (R = retângulo, T = triângulo, E = elipse) e
+compare os dois caminhos: **objeto livre**, que aceita qualquer coisa e só
+falha na hora de calcular a área, e **classe**, que valida cada campo antes
+mesmo do objeto existir.

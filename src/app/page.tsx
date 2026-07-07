@@ -10,6 +10,7 @@ const FASE_LABEL: Record<number, string> = {
 };
 
 const TOPICO_ICON: Record<string, string> = {
+  "objetos-e-classes": "📦",
   "big-o": "📊",
   arrays: "🔢",
   "busca-sequencial": "🔍",
@@ -116,7 +117,7 @@ export default function Home() {
             href={`/estrutura/${disponiveis[0]?.slug ?? ""}`}
             className="inline-flex items-center gap-2 rounded-xl bg-[var(--color-primary)] px-6 py-3 text-sm font-semibold text-[#1a1206] shadow-[0_8px_24px_-8px_var(--color-primary-soft)] transition-all hover:bg-[var(--color-primary-hover)] hover:shadow-[0_10px_28px_-6px_rgba(217,164,65,0.5)] active:scale-[0.98]"
           >
-            Começar por Big-O
+            Começar por {disponiveis[0]?.titulo}
             <span aria-hidden>→</span>
           </Link>
         </div>
