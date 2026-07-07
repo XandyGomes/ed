@@ -17,6 +17,7 @@ type Props<TState> = {
   operations: OperationDef<TState>[];
   Renderer: ComponentType<RendererProps<TState>>;
   legend?: { label: string; color: string }[];
+  onStateChange?: (state: TState) => void;
 };
 
 export function StructurePlayground<TState>({
@@ -24,6 +25,7 @@ export function StructurePlayground<TState>({
   operations,
   Renderer,
   legend,
+  onStateChange,
 }: Props<TState>) {
   const [structureState, setStructureState] = useState(initialState);
   const [selectedOpId, setSelectedOpId] = useState(operations[0]?.id);
@@ -46,12 +48,14 @@ export function StructurePlayground<TState>({
     setError(null);
     setFrames(result.frames);
     setStructureState(result.nextState);
+    onStateChange?.(result.nextState);
   };
 
   const handleReiniciar = () => {
     setStructureState(initialState);
     setFrames([{ id: 0, state: initialState, narration: "Estrutura reiniciada." }]);
     setError(null);
+    onStateChange?.(initialState);
   };
 
   return (

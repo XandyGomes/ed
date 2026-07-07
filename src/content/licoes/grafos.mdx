@@ -1,10 +1,27 @@
+import { KonigsbergPuzzle } from "@/components/grafos/KonigsbergPuzzle";
+
 # Grafos, BFS, DFS e Dijkstra
 
 Um **grafo** é um conjunto de **nós** (ou vértices) conectados por
 **arestas**. Diferente de árvores, um grafo não tem uma raiz fixa nem
 proibição de ciclos: qualquer nó pode se conectar a qualquer outro.
 
-## Representação
+![Nós conectados formando um grafo](/img/Grafos_Animation.gif)
+
+## Definição formal: G = (V, E)
+
+Matematicamente, um grafo **G** é um par ordenado **(V, E)**:
+
+- **V (vértices)**: o conjunto de nós. Ex: V = {1, 2, 3}.
+- **E (arestas)**: o conjunto de pares de vértices conectados. Ex:
+  E = {(1, 2), (2, 3)}.
+
+Dois vértices ligados por uma aresta são **adjacentes** (vizinhos), e essa
+aresta é dita **incidente** a ambos. No Facebook, cada pessoa é um
+vértice; quando duas pessoas são amigas, existe uma aresta entre elas,
+tornando-as adjacentes na rede.
+
+## Representação no computador
 
 As duas formas mais comuns de representar um grafo no código:
 
@@ -13,12 +30,72 @@ As duas formas mais comuns de representar um grafo no código:
   e é a representação que usamos internamente nesta página.
 - **Matriz de adjacência**: uma matriz n×n onde `matriz[i][j] = 1` (ou o
   peso da aresta) indica uma conexão entre os nós i e j. Simples, mas
-  gasta O(n²) de memória mesmo com poucas arestas.
+  gasta O(n²) de memória mesmo com poucas arestas, a maioria delas zero.
+
+Use o sandbox mais abaixo para montar seu próprio grafo e ver essas duas
+representações lado a lado, atualizadas ao vivo.
 
 Grafos podem ser **direcionados** (a aresta só vale em um sentido, como
-"segue" no Instagram) ou **não-direcionados** (a conexão vale nos dois
+"segue" no Instagram: você seguir alguém não significa que essa pessoa
+te segue de volta) ou **não-direcionados** (a conexão vale nos dois
 sentidos, como "é amigo de" no Facebook). O grafo desta página é
 não-direcionado e com pesos nas arestas.
+
+## Grau de um vértice
+
+O **grau** de um vértice (grau(v) ou d(v)) é o número de arestas que
+incidem sobre ele, ou seja, quantos vizinhos ele tem. Um vértice com
+**grau 0** (nenhuma aresta conectada) é chamado de **vértice isolado**.
+Numa rede social, o usuário com mais conexões (maior grau) é o mais
+influente; uma conta recém-criada, sem seguidores, é um vértice isolado.
+
+### Lema do aperto de mão
+
+A soma dos graus de todos os vértices de um grafo é sempre o **dobro do
+número de arestas**:
+
+```
+Σ grau(v) = 2 × |E|
+```
+
+Isso acontece porque cada aresta tem exatamente duas pontas, então ela
+contribui com +1 para o grau de cada um dos dois vértices que conecta.
+Uma consequência direta: todo grafo tem um número **par** de vértices
+com grau ímpar (nunca pode haver só um, ou três, vértices de grau ímpar).
+
+## Laços e multigrafos
+
+Duas variações da definição básica de grafo:
+
+- **Laço** (self-loop): uma aresta que conecta um vértice a si mesmo.
+- **Multigrafo**: permite mais de uma aresta entre o mesmo par de
+  vértices (como as pontes duplicadas de Königsberg, mais abaixo).
+
+## Caminhos, passeios e ciclos
+
+Existem regras específicas para descrever como nos movemos dentro de um
+grafo:
+
+- **Passeio** (walk): uma caminhada qualquer, pode repetir vértices e
+  arestas.
+- **Caminho** (path): uma caminhada que **não repete nenhum vértice**.
+- **Ciclo** (cycle): um caminho que termina no mesmo vértice onde
+  começou.
+
+## Subgrafos e conexidade
+
+Um **subgrafo** é uma "parte" de um grafo maior (um subconjunto de seus
+vértices e arestas). Um grafo é **conexo** se existe pelo menos um
+caminho entre qualquer par de vértices; quando há "ilhas" isoladas sem
+caminho entre si, cada uma delas é chamada de **componente conexa**.
+
+## Isomorfismo
+
+Dois grafos são **isomorfos** quando têm exatamente a mesma estrutura de
+conexões, mesmo que desenhados de formas completamente diferentes. Se
+for possível renomear os vértices de um grafo até ele ficar idêntico ao
+outro, eles são isomorfos: o desenho é só a "roupa", a estrutura de
+conexões é a "alma" do grafo.
 
 ## Busca em Largura (BFS)
 
@@ -33,7 +110,7 @@ nós (em grafos sem peso).
 ## Busca em Profundidade (DFS)
 
 O DFS explora o mais fundo possível por um caminho antes de voltar
-("backtrack") e tentar outro. Usa uma **pilha** (LIFO) — aqui,
+("backtrack") e tentar outro. Usa uma **pilha** (LIFO), aqui
 implementada via recursão, que é essencialmente uma pilha de chamadas.
 
 DFS é útil para detectar ciclos, ordenação topológica, e explorar toda a
@@ -73,17 +150,23 @@ moradores queriam saber se era possível fazer um passeio atravessando
 **cada ponte exatamente uma vez**, voltando ao ponto de partida.
 
 Euler representou cada área de terra como um nó e cada ponte como uma
-aresta, e provou que isso era **impossível**: um passeio desses (hoje
+aresta (um multigrafo, já que há pares de áreas ligadas por mais de uma
+ponte), e provou que isso era **impossível**: um passeio desses (hoje
 chamado de "circuito euleriano") só existe se **todo nó tiver um número
 par de arestas**. Em Königsberg, todas as 4 áreas tinham um número ímpar
 de pontes. Essa foi a primeira vez que um problema foi resolvido
-representando-o como um grafo — o nascimento formal da área.
+representando-o como um grafo, o nascimento formal da área.
+
+<KonigsbergPuzzle />
 
 ## Famílias notáveis de grafos
 
 Alguns grafos têm estrutura tão regular e interessante que ganharam
 nome próprio:
 
+- **Grafos completos (Kₙ)**: toda aresta possível existe, cada vértice
+  se conecta a todos os outros.
+- **Ciclos (Cₙ)**: os vértices formam um anel fechado contínuo.
 - **Grafo de Petersen**: 10 nós, 15 arestas, extremamente simétrico.
   Serve como contraexemplo clássico para várias conjecturas em teoria
   dos grafos (é o grafo "pequeno" que quebra várias propriedades que
@@ -119,10 +202,27 @@ Grafos estão em praticamente todo sistema que envolve **conexões**:
   arestas; protocolos de roteamento usam variações de algoritmos de
   caminho mínimo para decidir por onde os pacotes de dados devem passar.
 
+## Glossário
+
+| Termo | Significado |
+|---|---|
+| Grafo G(V,E) | Estrutura matemática composta por vértices (V) e arestas (E). |
+| Vértice (nó) | O ponto fundamental de um grafo, representa uma entidade. |
+| Aresta | A linha de conexão entre dois vértices, representa uma relação. |
+| Grau d(v) | Número de arestas conectadas a um vértice. |
+| Adjacência | Dois vértices são adjacentes se existe uma aresta entre eles. |
+| Caminho | Sequência de vértices conectados sem repetir nenhum. |
+| Ciclo | Um caminho que começa e termina no mesmo vértice. |
+| Componente conexa | Um "pedaço" do grafo onde todos os nós se alcançam entre si. |
+| Digrafo | Grafo dirigido, onde as arestas têm direção (setas). |
+| Isomorfismo | Dois grafos com a mesma estrutura de conexões, desenhados de formas diferentes. |
+
 ## Experimente
 
 Rode BFS e DFS a partir do mesmo nó e compare a ordem de visita. Depois
 rode Dijkstra e observe a narração mostrando as distâncias sendo
-atualizadas (relaxamento de arestas) até chegar ao resultado final.
-Use as operações de **sandbox** para adicionar seus próprios nós e
-arestas e criar um grafo diferente do exemplo.
+atualizadas (relaxamento de arestas) até chegar ao resultado final. Use
+as operações de **sandbox** para adicionar seus próprios nós e arestas, e
+acompanhe o painel de **representação em memória** mudando ao vivo
+conforme você edita o grafo. Mais acima, tente resolver o quebra-cabeça
+das 7 pontes por conta própria antes de ler a explicação.

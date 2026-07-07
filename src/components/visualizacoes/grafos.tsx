@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { StructurePlayground } from "@/components/visualizer/StructurePlayground";
 import { GraphRenderer } from "@/components/visualizer/renderers/GraphRenderer";
+import { GraphRepresentations } from "@/components/visualizacoes/GraphRepresentations";
 import { makeGraphState, graphBFS, graphDFS, graphAddNode, graphAddEdge } from "@/lib/algorithms/graph";
 import { graphDijkstra } from "@/lib/algorithms/dijkstra";
 import type { GraphState } from "@/lib/algorithms/graph";
@@ -47,18 +48,23 @@ const operations: OperationDef<GraphState>[] = [
 
 export default function GrafosPlayground() {
   const initialState = useMemo(() => makeGraphState(), []);
+  const [liveState, setLiveState] = useState<GraphState>(initialState);
 
   return (
-    <StructurePlayground
-      initialState={initialState}
-      operations={operations}
-      Renderer={GraphRenderer}
-      legend={[
-        { label: "atual", color: "var(--color-highlight-compare)" },
-        { label: "na fila/pilha", color: "var(--color-highlight-new)" },
-        { label: "visitado", color: "var(--color-highlight-visit)" },
-        { label: "concluído", color: "var(--color-highlight-success)" },
-      ]}
-    />
+    <div className="flex flex-col gap-6">
+      <StructurePlayground
+        initialState={initialState}
+        operations={operations}
+        Renderer={GraphRenderer}
+        onStateChange={setLiveState}
+        legend={[
+          { label: "atual", color: "var(--color-highlight-compare)" },
+          { label: "na fila/pilha", color: "var(--color-highlight-new)" },
+          { label: "visitado", color: "var(--color-highlight-visit)" },
+          { label: "concluído", color: "var(--color-highlight-success)" },
+        ]}
+      />
+      <GraphRepresentations state={liveState} />
+    </div>
   );
 }
