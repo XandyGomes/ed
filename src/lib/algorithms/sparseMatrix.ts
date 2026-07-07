@@ -69,3 +69,44 @@ export function gerarRepresentacaoEsparsa(state: SparseMatrixState): OperationRe
 
   return { ok: true, frames, nextState: state };
 }
+
+export function reconstruirMatrizDensa(state: SparseMatrixState): OperationResult<SparseMatrixState> {
+  const naoZero = state.cells.filter((c) => c.value !== 0);
+  const frames: FrameSequence<SparseMatrixState> = [
+    {
+      id: 0,
+      state,
+      narration: `Partindo da lista esparsa com ${naoZero.length} triplas (linha, coluna, valor), reconstruindo a matriz densa ${state.rows}×${state.cols} e preenchendo o resto com zero.`,
+    },
+  ];
+
+  const colocadas: string[] = [];
+  for (const cell of naoZero) {
+    colocadas.push(cell.id);
+    frames.push({
+      id: frames.length,
+      state,
+      highlights: colocadas.map((id) => hl(id, "success")),
+      narration: `Colocando o valor ${cell.value} na posição (${cell.row}, ${cell.col})...`,
+    });
+  }
+
+  frames.push({
+    id: frames.length,
+    state,
+    highlights: colocadas.map((id) => hl(id, "success")),
+    narration: `Matriz densa reconstruída: todas as posições que não estavam na lista esparsa continuam zero.`,
+  });
+
+  return { ok: true, frames, nextState: state };
+}
+
+export function makeSparseMatrixStateFromGrid(grid: { rows: number; cols: number; gray: number[][] }): SparseMatrixState {
+  const cells: SparseCell[] = [];
+  for (let r = 0; r < grid.rows; r++) {
+    for (let c = 0; c < grid.cols; c++) {
+      cells.push({ id: createId(), row: r, col: c, value: grid.gray[r][c] });
+    }
+  }
+  return { rows: grid.rows, cols: grid.cols, cells };
+}

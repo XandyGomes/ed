@@ -41,10 +41,22 @@ Matrizes esparsas aparecem em:
 Acessar um elemento específico `matriz[i][j]` é O(1) na representação
 densa (cálculo direto de endereço), mas O(k) na esparsa (é preciso
 procurar entre as k triplas guardadas). A matriz esparsa troca
-velocidade de acesso por economia de memória — vale a pena quando a
+velocidade de acesso por economia de memória, vale a pena quando a
 esparsidade é alta o suficiente.
+
+## Exemplo real: uma imagem é uma matriz
+
+Toda imagem digital é, na prática, uma matriz de valores (um por
+pixel). Um logotipo simples, com fundo sólido e poucos detalhes, vira
+uma matriz cheia de zeros quando convertida para escala de cinza (preto
+= 0): a maior parte da imagem carrega pouca informação útil, exatamente
+o cenário onde a representação esparsa compensa.
 
 ## Experimente
 
 Rode "Gerar representação esparsa" e observe o algoritmo percorrendo
-célula por célula, adicionando à lista só as que não são zero.
+célula por célula, adicionando à lista só as que não são zero. Depois
+rode "Reconstruir matriz densa a partir da esparsa" para ver o caminho
+inverso: partindo só das triplas guardadas, o resto é preenchido com
+zero. Mais abaixo, envie sua própria imagem e veja esses dois processos
+rodando em cima de uma matriz de verdade.
