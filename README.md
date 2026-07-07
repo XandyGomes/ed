@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧮 Estrutura de Dados
 
-## Getting Started
+> Site interativo de Estrutura de Dados: lições em português, animações passo a passo dos algoritmos e quizzes de prática, para as turmas onde leciono a disciplina.
 
-First, run the development server:
+[![GitHub Pages](https://img.shields.io/badge/Demo-GitHub_Pages-222?style=for-the-badge&logo=github)](https://xandygomes.github.io/estrutura-de-dados/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Motion](https://img.shields.io/badge/Motion-black?style=for-the-badge&logo=framer&logoColor=white)](https://motion.dev)
+
+---
+
+## ✨ Sobre o projeto
+
+20 tópicos cobrindo toda a ementa da disciplina, cada um com três partes:
+
+- **📖 Lição**: conteúdo em texto (MDX), com exemplos, complexidade e contexto histórico/aplicado.
+- **🎬 Visualização**: animação interativa passo a passo do algoritmo rodando de verdade, com play/pause, avançar/voltar passo, controle de velocidade e narração.
+- **✏️ Prática**: quiz de múltipla escolha com feedback imediato.
+
+O site unifica, num só lugar e sem depender de nenhuma linguagem de programação específica, o material que antes estava espalhado em apostilas separadas por instituição. O código de exemplo em cada linguagem continua nos repositórios específicos de cada turma no meu GitHub.
+
+## 📚 Conteúdo
+
+- **Fundamentos e arrays**: Big-O, Arrays, Busca Sequencial, Busca Binária, Bubble Sort, Selection Sort, Recursividade, Merge Sort, Quick Sort, Matriz Esparsa.
+- **Estruturas lineares**: Pilhas, Filas, Deque, Listas Ligadas, Listas Duplamente Encadeadas.
+- **Árvores**: Árvores Binárias/BST, Heaps, Árvores AVL.
+- **Tabelas Hash**: função de hash, colisões e encadeamento.
+- **Grafos**: representação, BFS, DFS, Dijkstra, história (Pontes de Königsberg), aplicações reais e sandbox para montar seu próprio grafo.
+
+Vários tópicos também têm o PDF da aula disponível para download direto na página.
+
+## 🛠️ Tech Stack
+
+- **Framework:** [Next.js 16](https://nextjs.org/) (App Router), exportado como site 100% estático
+- **Linguagem:** [TypeScript](https://www.typescriptlang.org/)
+- **Estilização:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animações:** [Motion](https://motion.dev/)
+- **Conteúdo:** [MDX](https://mdxjs.com/) (`@next/mdx`)
+
+### Motor de animação
+
+Cada operação de algoritmo (inserir, buscar, comparar, rotacionar...) é compilada em uma sequência de *frames*: um snapshot do estado da estrutura, destaques visuais e uma narração em português. Um hook e um player genéricos (`useVisualizer` + `VisualizerControls`) reproduzem essa sequência para qualquer estrutura de dados, então a lógica do algoritmo e a animação nunca ficam dessincronizadas.
+
+## 🚀 Como executar o projeto
+
+Pré-requisito: Node.js 18+.
 
 ```bash
+git clone https://github.com/XandyGomes/estrutura-de-dados.git
+cd estrutura-de-dados
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Para gerar o build estático (o mesmo publicado no GitHub Pages):
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+O resultado fica em `out/`.
 
-To learn more about Next.js, take a look at the following resources:
+## 👨‍🏫 Desenvolvido por
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Prof. Alexandre Gomes da Silva** ([Xandy Gomes](https://github.com/XandyGomes)) — professor de Estrutura de Dados na FATEC, Uni-FACEF, SENAI e Anhanguera, Mestre em Computação Aplicada pela USP.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📝 Licença
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
