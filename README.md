@@ -2,7 +2,7 @@
 
 > Site interativo de Estrutura de Dados: lições em português, animações passo a passo dos algoritmos e quizzes de prática, para as turmas onde leciono a disciplina.
 
-[![GitHub Pages](https://img.shields.io/badge/Demo-GitHub_Pages-222?style=for-the-badge&logo=github)](https://xandygomes.github.io/estrutura-de-dados/)
+[![GitHub Pages](https://img.shields.io/badge/Demo-GitHub_Pages-222?style=for-the-badge&logo=github)](https://xandygomes.github.io/ed/)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Motion](https://img.shields.io/badge/Motion-black?style=for-the-badge&logo=framer&logoColor=white)](https://motion.dev)
@@ -46,8 +46,8 @@ Cada operação de algoritmo (inserir, buscar, comparar, rotacionar...) é compi
 Pré-requisito: Node.js 18+.
 
 ```bash
-git clone https://github.com/XandyGomes/estrutura-de-dados.git
-cd estrutura-de-dados
+git clone https://github.com/XandyGomes/ed.git
+cd ed
 npm install
 npm run dev
 ```
