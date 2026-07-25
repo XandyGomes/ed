@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { StructurePlayground } from "@/components/visualizer/StructurePlayground";
 import { HashTableRenderer } from "@/components/visualizer/renderers/HashTableRenderer";
 import { makeHashState, hashInsert, hashSearch, hashRemove } from "@/lib/algorithms/hashTable";
+import { HASH_INSERT_CODE, HASH_SEARCH_CODE, HASH_REMOVE_CODE } from "@/lib/code/hashTable.code";
 import type { HashState } from "@/lib/algorithms/hashTable";
 import type { OperationDef } from "@/lib/types";
 
@@ -36,6 +37,7 @@ export default function TabelasHashPlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={HashTableRenderer}
+      code={{ inserir: HASH_INSERT_CODE, buscar: HASH_SEARCH_CODE, remover: HASH_REMOVE_CODE }}
       legend={[
         { label: "bucket ativo", color: "var(--color-primary)" },
         { label: "comparando", color: "var(--color-highlight-compare)" },

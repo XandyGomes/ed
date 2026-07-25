@@ -38,6 +38,7 @@ export function hashInsert(state: HashState, value: number): OperationResult<Has
       state,
       pointers: { bucket: String(index) },
       narration: `hash(${value}) = ${value} % ${state.capacity} = ${index}.`,
+      stepKind: "compute-hash",
     },
   ];
 
@@ -47,6 +48,7 @@ export function hashInsert(state: HashState, value: number): OperationResult<Has
       state,
       pointers: { bucket: String(index) },
       narration: `Colisão! O bucket ${index} já tem ${state.buckets[index].length} item(ns). ${value} será encadeado no final da lista.`,
+      stepKind: "collision",
     });
   }
 
@@ -57,6 +59,7 @@ export function hashInsert(state: HashState, value: number): OperationResult<Has
     highlights: [{ id: newItem.id, color: "new" }],
     pointers: { bucket: String(index) },
     narration: `${value} inserido no bucket ${index}. Em média, O(1).`,
+    stepKind: "insert",
   });
 
   return { ok: true, frames, nextState };
@@ -71,6 +74,7 @@ export function hashSearch(state: HashState, value: number): OperationResult<Has
       state,
       pointers: { bucket: String(index) },
       narration: `hash(${value}) = ${index}. Procurando na cadeia do bucket ${index}...`,
+      stepKind: "compute-hash",
     },
   ];
 
@@ -82,6 +86,7 @@ export function hashSearch(state: HashState, value: number): OperationResult<Has
         highlights: [{ id: item.id, color: "success" }],
         pointers: { bucket: String(index) },
         narration: `Encontrado! ${value} está no bucket ${index}.`,
+        stepKind: "found",
       });
       return { ok: true, frames, nextState: state };
     }
@@ -91,6 +96,7 @@ export function hashSearch(state: HashState, value: number): OperationResult<Has
       highlights: [{ id: item.id, color: "compare" }],
       pointers: { bucket: String(index) },
       narration: `Comparando com ${item.value} na cadeia do bucket ${index}...`,
+      stepKind: "compare",
     });
   }
 
@@ -99,6 +105,7 @@ export function hashSearch(state: HashState, value: number): OperationResult<Has
     state,
     pointers: { bucket: String(index) },
     narration: `${value} não está na tabela (cadeia do bucket ${index} percorrida inteira).`,
+    stepKind: "not-found",
   });
   return { ok: true, frames, nextState: state };
 }
@@ -114,6 +121,7 @@ export function hashRemove(state: HashState, value: number): OperationResult<Has
       state,
       pointers: { bucket: String(index) },
       narration: `hash(${value}) = ${index}. Procurando na cadeia do bucket ${index} para remover...`,
+      stepKind: "compute-hash",
     },
   ];
 
@@ -129,6 +137,7 @@ export function hashRemove(state: HashState, value: number): OperationResult<Has
     highlights: [{ id: removedItem.id, color: "danger" }],
     pointers: { bucket: String(index) },
     narration: `Encontrado: ${value}. Removendo da cadeia do bucket ${index}.`,
+    stepKind: "target-found",
   });
 
   nextState.buckets[index].splice(itemIndex, 1);
@@ -137,6 +146,7 @@ export function hashRemove(state: HashState, value: number): OperationResult<Has
     state: nextState,
     pointers: { bucket: String(index) },
     narration: `${value} removido. Remoção é O(1) em média (poucos itens por bucket, com boa função de hash).`,
+    stepKind: "remove",
   });
 
   return { ok: true, frames, nextState };
