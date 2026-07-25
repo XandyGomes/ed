@@ -11,20 +11,21 @@ export function bstInsert(state: TreeState, value: number): OperationResult<Tree
     nextState.nodes[newNode.id] = newNode;
     nextState.rootId = newNode.id;
     const frames: FrameSequence<TreeState> = [
-      { id: 0, state, narration: "Árvore vazia: o novo nó se torna a raiz." },
+      { id: 0, state, narration: "Árvore vazia: o novo nó se torna a raiz.", stepKind: "empty" },
       {
         id: 1,
         state: nextState,
         highlights: [{ id: newNode.id, color: "new" }],
         pointers: { raiz: newNode.id },
         narration: `${value} inserido como raiz.`,
+        stepKind: "insert",
       },
     ];
     return { ok: true, frames, nextState };
   }
 
   const frames: FrameSequence<TreeState> = [
-    { id: 0, state, pointers: { raiz: nextState.rootId }, narration: `Comparando ${value} a partir da raiz...` },
+    { id: 0, state, pointers: { raiz: nextState.rootId }, narration: `Comparando ${value} a partir da raiz...`, stepKind: "start" },
   ];
 
   let currentId = nextState.rootId;
@@ -42,6 +43,7 @@ export function bstInsert(state: TreeState, value: number): OperationResult<Tree
         value < current.value
           ? `${value} < ${current.value}: vai para a subárvore esquerda.`
           : `${value} > ${current.value}: vai para a subárvore direita.`,
+      stepKind: "compare",
     });
 
     const goLeft = value < current.value;
@@ -56,6 +58,7 @@ export function bstInsert(state: TreeState, value: number): OperationResult<Tree
         state: nextState,
         highlights: [{ id: newNode.id, color: "new" }],
         narration: `${value} inserido como filho ${goLeft ? "esquerdo" : "direito"} de ${current.value}.`,
+        stepKind: "insert",
       });
       return { ok: true, frames, nextState };
     }
@@ -68,7 +71,7 @@ export function bstSearch(state: TreeState, value: number): OperationResult<Tree
   if (!state.rootId) return { ok: false, error: "A árvore está vazia." };
 
   const frames: FrameSequence<TreeState> = [
-    { id: 0, state, pointers: { raiz: state.rootId }, narration: `Buscando ${value} a partir da raiz...` },
+    { id: 0, state, pointers: { raiz: state.rootId }, narration: `Buscando ${value} a partir da raiz...`, stepKind: "start" },
   ];
 
   let currentId: string | null = state.rootId;
@@ -81,6 +84,7 @@ export function bstSearch(state: TreeState, value: number): OperationResult<Tree
         highlights: [{ id: current.id, color: "success" }],
         pointers: { atual: current.id },
         narration: `Encontrado! ${value} está na árvore.`,
+        stepKind: "found",
       });
       return { ok: true, frames, nextState: state };
     }
@@ -93,11 +97,12 @@ export function bstSearch(state: TreeState, value: number): OperationResult<Tree
         value < current.value
           ? `${value} < ${current.value}: vai para a esquerda.`
           : `${value} > ${current.value}: vai para a direita.`,
+      stepKind: "compare",
     });
     currentId = value < current.value ? current.leftId : current.rightId;
   }
 
-  frames.push({ id: frames.length, state, narration: `${value} não está na árvore. Busca é O(log n) em média, O(n) no pior caso (árvore desbalanceada).` });
+  frames.push({ id: frames.length, state, narration: `${value} não está na árvore. Busca é O(log n) em média, O(n) no pior caso (árvore desbalanceada).`, stepKind: "not-found" });
   return { ok: true, frames, nextState: state };
 }
 
@@ -107,7 +112,7 @@ export function bstRemove(state: TreeState, value: number): OperationResult<Tree
 
   const nextState = cloneTreeState(state);
   const frames: FrameSequence<TreeState> = [
-    { id: 0, state, pointers: { raiz: state.rootId }, narration: `Procurando ${value} para remover...` },
+    { id: 0, state, pointers: { raiz: state.rootId }, narration: `Procurando ${value} para remover...`, stepKind: "start" },
   ];
 
   let parentId: string | null = null;
@@ -123,6 +128,7 @@ export function bstRemove(state: TreeState, value: number): OperationResult<Tree
         value < current.value
           ? `${value} < ${current.value}: vai para a esquerda.`
           : `${value} > ${current.value}: vai para a direita.`,
+      stepKind: "compare",
     });
     parentId = currentId;
     currentId = value < current.value ? current.leftId : current.rightId;
@@ -139,6 +145,7 @@ export function bstRemove(state: TreeState, value: number): OperationResult<Tree
     highlights: [{ id: target.id, color: "danger" }],
     pointers: { atual: target.id },
     narration: `Encontrado: ${value}.`,
+    stepKind: "target-found",
   });
 
   function replaceChild(pId: string | null, oldId: string, newId: string | null) {
@@ -154,18 +161,19 @@ export function bstRemove(state: TreeState, value: number): OperationResult<Tree
   if (!target.leftId && !target.rightId) {
     replaceChild(parentId, target.id, null);
     delete nextState.nodes[target.id];
-    frames.push({ id: frames.length, state: nextState, narration: `${value} era uma folha: removido diretamente. O(log n) em média.` });
+    frames.push({ id: frames.length, state: nextState, narration: `${value} era uma folha: removido diretamente. O(log n) em média.`, stepKind: "case-leaf" });
   } else if (!target.leftId || !target.rightId) {
     const childId = (target.leftId ?? target.rightId) as string;
     replaceChild(parentId, target.id, childId);
     delete nextState.nodes[target.id];
-    frames.push({ id: frames.length, state: nextState, narration: `${value} tinha um único filho: ele assume o lugar do nó removido.` });
+    frames.push({ id: frames.length, state: nextState, narration: `${value} tinha um único filho: ele assume o lugar do nó removido.`, stepKind: "case-one-child" });
   } else {
     frames.push({
       id: frames.length,
       state,
       highlights: [{ id: target.id, color: "danger" }],
       narration: `${value} tem dois filhos: buscando o sucessor (o menor valor da subárvore direita)...`,
+      stepKind: "case-two-children",
     });
     let succParentId = target.id;
     let succId = target.rightId;
@@ -175,6 +183,7 @@ export function bstRemove(state: TreeState, value: number): OperationResult<Tree
         state,
         highlights: [{ id: nextState.nodes[succId].id, color: "compare" }],
         narration: `Descendo à esquerda: ${nextState.nodes[succId].value}...`,
+        stepKind: "successor-descend",
       });
       succParentId = succId;
       succId = nextState.nodes[succId].leftId as string;
@@ -185,6 +194,7 @@ export function bstRemove(state: TreeState, value: number): OperationResult<Tree
       state,
       highlights: [{ id: successor.id, color: "success" }],
       narration: `Sucessor encontrado: ${successor.value}.`,
+      stepKind: "successor-found",
     });
 
     target.value = successor.value;
@@ -196,6 +206,7 @@ export function bstRemove(state: TreeState, value: number): OperationResult<Tree
       state: nextState,
       highlights: [{ id: target.id, color: "new" }],
       narration: `${successor.value} substitui o valor removido; o nó duplicado é descartado.`,
+      stepKind: "successor-replace",
     });
   }
 
@@ -235,6 +246,7 @@ export function bstTraverse(state: TreeState, order: TraversalOrder): OperationR
       state,
       highlights: sequence.slice(0, i + 1).map((nid, j) => ({ id: nid, color: j === i ? "success" : "visit" })),
       narration: `Visitando ${state.nodes[id].value} (${i + 1}/${sequence.length}).`,
+      stepKind: "visit",
     });
   });
 
