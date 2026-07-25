@@ -9,6 +9,7 @@ export type Frame<TState> = {
   highlights?: Highlight[];
   pointers?: Record<string, string>;
   narration: string;
+  stepKind?: string;
 };
 
 export type FrameSequence<TState> = Frame<TState>[];
