@@ -97,9 +97,22 @@ export function CodePanel({ language, onLanguageChange, source, stepKind }: Prop
   const lines = useMemo(() => source.code.split("\n"), [source]);
   const highlightedLine = stepKind ? source.lineFor[stepKind] : undefined;
   const activeLineRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    activeLineRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+    const container = containerRef.current;
+    const active = activeLineRef.current;
+    if (!container || !active) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const activeRect = active.getBoundingClientRect();
+    const isAbove = activeRect.top < containerRect.top;
+    const isBelow = activeRect.bottom > containerRect.bottom;
+    if (!isAbove && !isBelow) return;
+
+    const targetScrollTop =
+      container.scrollTop + (activeRect.top - containerRect.top) - container.clientHeight / 2 + active.clientHeight / 2;
+    container.scrollTo({ top: targetScrollTop, behavior: "smooth" });
   }, [highlightedLine]);
 
   return (
@@ -108,7 +121,10 @@ export function CodePanel({ language, onLanguageChange, source, stepKind }: Prop
         <span className="text-xs font-medium uppercase tracking-wider text-[var(--color-muted)]">Código</span>
         <LanguageSelect language={language} onLanguageChange={onLanguageChange} />
       </div>
-      <div className="min-w-0 overflow-y-auto p-3 font-mono text-[12.5px] leading-6 sm:text-[13px]">
+      <div
+        ref={containerRef}
+        className="max-h-96 min-w-0 overflow-y-auto p-3 font-mono text-[12.5px] leading-6 sm:text-[13px]"
+      >
         {lines.map((line, i) => {
           const lineNumber = i + 1;
           const isActive = lineNumber === highlightedLine;
