@@ -1,4 +1,4 @@
-import type { CodeLanguage } from "./bubbleSort.code";
+import type { CodeLanguage } from "./languages";
 
 const KEYWORDS: Record<CodeLanguage, string[]> = {
   java: ["public", "static", "void", "int", "boolean", "for", "if", "break", "true", "false", "new"],
