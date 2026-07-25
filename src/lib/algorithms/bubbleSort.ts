@@ -12,6 +12,7 @@ export function bubbleSort(state: ArrayState): OperationResult<ArrayState> {
       id: 0,
       state: { items: [...items] },
       narration: "Iniciando Bubble Sort: comparar pares adjacentes e trocar se estiverem fora de ordem.",
+      stepKind: "start",
     },
   ];
 
@@ -25,6 +26,7 @@ export function bubbleSort(state: ArrayState): OperationResult<ArrayState> {
         state: { items: [...items] },
         highlights: [...sortedIds].map((id) => hl(id, "success")).concat([hl(a.id, "compare"), hl(b.id, "compare")]),
         narration: `Comparando ${a.value} e ${b.value}...`,
+        stepKind: "compare",
       });
       if (a.value > b.value) {
         items[j] = b;
@@ -35,6 +37,7 @@ export function bubbleSort(state: ArrayState): OperationResult<ArrayState> {
           state: { items: [...items] },
           highlights: [...sortedIds].map((id) => hl(id, "success")).concat([hl(a.id, "new"), hl(b.id, "new")]),
           narration: `${a.value} > ${b.value}: troca!`,
+          stepKind: "swap",
         });
       }
     }
@@ -44,6 +47,7 @@ export function bubbleSort(state: ArrayState): OperationResult<ArrayState> {
       state: { items: [...items] },
       highlights: [...sortedIds].map((id) => hl(id, "success")),
       narration: `${items[n - 1 - i].value} chegou na posição final.`,
+      stepKind: "position-final",
     });
     if (!swappedAny) break;
   }
@@ -54,6 +58,7 @@ export function bubbleSort(state: ArrayState): OperationResult<ArrayState> {
     state: { items: [...items] },
     highlights: items.map((it) => hl(it.id, "success")),
     narration: `Array ordenado: ${items.map((it) => it.value).join(", ")}.`,
+    stepKind: "done",
   });
 
   return { ok: true, frames, nextState: { items } };

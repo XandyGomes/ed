@@ -43,8 +43,9 @@ export function ArrayRenderer({ state, highlights, pointers, showIndex = true }:
               animate={{
                 backgroundColor: color ?? "var(--color-surface)",
                 scale: color ? 1.08 : 1,
+                boxShadow: color ? `0 0 0 4px color-mix(in srgb, ${color} 30%, transparent)` : "0 0 0 0px transparent",
               }}
-              transition={{ duration: 0.25 }}
+              transition={{ type: "spring", stiffness: 500, damping: 26 }}
               className="flex h-14 w-14 items-center justify-center rounded-lg border-2 border-[var(--color-border)] font-mono text-lg font-semibold shadow-sm"
               style={{ color: color ? "#fff" : "var(--color-foreground)" }}
             >
