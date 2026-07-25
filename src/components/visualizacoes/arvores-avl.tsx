@@ -5,6 +5,8 @@ import { StructurePlayground } from "@/components/visualizer/StructurePlayground
 import { TreeRenderer } from "@/components/visualizer/renderers/TreeRenderer";
 import { makeTreeState } from "@/lib/algorithms/treeCommon";
 import { avlInsert, avlSearch } from "@/lib/algorithms/avl";
+import { AVL_INSERT_CODE } from "@/lib/code/avl.code";
+import { BST_SEARCH_CODE } from "@/lib/code/bst.code";
 import type { OperationDef, TreeState } from "@/lib/types";
 
 const operations: OperationDef<TreeState>[] = [
@@ -30,6 +32,7 @@ export default function ArvoresAvlPlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={TreeRenderer}
+      code={{ inserir: AVL_INSERT_CODE, buscar: BST_SEARCH_CODE }}
       legend={[
         { label: "comparando", color: "var(--color-highlight-compare)" },
         { label: "desbalanceado", color: "var(--color-highlight-danger)" },

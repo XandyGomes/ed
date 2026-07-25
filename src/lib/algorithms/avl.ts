@@ -43,14 +43,14 @@ export function avlInsert(state: TreeState, value: number): OperationResult<Tree
     nextState.nodes[newNode.id] = newNode;
     nextState.rootId = newNode.id;
     const frames: FrameSequence<TreeState> = [
-      { id: 0, state, narration: "Árvore vazia: o novo nó se torna a raiz." },
-      { id: 1, state: nextState, highlights: [{ id: newNode.id, color: "new" }], narration: `${value} inserido como raiz.` },
+      { id: 0, state, narration: "Árvore vazia: o novo nó se torna a raiz.", stepKind: "insert" },
+      { id: 1, state: nextState, highlights: [{ id: newNode.id, color: "new" }], narration: `${value} inserido como raiz.`, stepKind: "insert" },
     ];
     return { ok: true, frames, nextState };
   }
 
   const frames: FrameSequence<TreeState> = [
-    { id: 0, state, pointers: { raiz: nextState.rootId }, narration: `Comparando ${value} a partir da raiz...` },
+    { id: 0, state, pointers: { raiz: nextState.rootId }, narration: `Comparando ${value} a partir da raiz...`, stepKind: "start" },
   ];
 
   const path: string[] = [];
@@ -70,6 +70,7 @@ export function avlInsert(state: TreeState, value: number): OperationResult<Tree
         value < current.value
           ? `${value} < ${current.value}: vai para a esquerda.`
           : `${value} > ${current.value}: vai para a direita.`,
+      stepKind: "compare",
     });
     const goLeft = value < current.value;
     const childId = goLeft ? current.leftId : current.rightId;
@@ -83,6 +84,7 @@ export function avlInsert(state: TreeState, value: number): OperationResult<Tree
         state: nextState,
         highlights: [{ id: newNode.id, color: "new" }],
         narration: `${value} inserido como filho ${goLeft ? "esquerdo" : "direito"} de ${current.value}.`,
+        stepKind: "insert",
       });
       path.push(newNode.id);
       break;
@@ -108,6 +110,7 @@ export function avlInsert(state: TreeState, value: number): OperationResult<Tree
           state: nextState,
           highlights: [{ id: ancestor.id, color: "danger" }],
           narration: `Desbalanceado em ${ancestor.value} (fator ${balance}): caso Esquerda-Esquerda. Rotação simples à direita.`,
+          stepKind: "ll-detect",
         });
         const newSubRoot = rotateRight(nextState, ancestorId);
         attachToParent(nextState, parentOfAncestorId, ancestorId, newSubRoot);
@@ -116,6 +119,7 @@ export function avlInsert(state: TreeState, value: number): OperationResult<Tree
           state: nextState,
           highlights: [{ id: newSubRoot, color: "new" }],
           narration: `Rotação concluída. ${nextState.nodes[newSubRoot].value} é a nova raiz da subárvore.`,
+          stepKind: "ll-done",
         });
       } else {
         frames.push({
@@ -123,10 +127,11 @@ export function avlInsert(state: TreeState, value: number): OperationResult<Tree
           state: nextState,
           highlights: [{ id: ancestor.id, color: "danger" }],
           narration: `Desbalanceado em ${ancestor.value} (fator ${balance}): caso Esquerda-Direita. Rotação dupla.`,
+          stepKind: "lr-detect",
         });
         const newLeftChild = rotateLeft(nextState, leftChildId);
         ancestor.leftId = newLeftChild;
-        frames.push({ id: frames.length, state: nextState, narration: "Primeiro, rotação à esquerda no filho esquerdo." });
+        frames.push({ id: frames.length, state: nextState, narration: "Primeiro, rotação à esquerda no filho esquerdo.", stepKind: "lr-first" });
         const newSubRoot = rotateRight(nextState, ancestorId);
         attachToParent(nextState, parentOfAncestorId, ancestorId, newSubRoot);
         frames.push({
@@ -134,6 +139,7 @@ export function avlInsert(state: TreeState, value: number): OperationResult<Tree
           state: nextState,
           highlights: [{ id: newSubRoot, color: "new" }],
           narration: `Depois, rotação à direita. ${nextState.nodes[newSubRoot].value} é a nova raiz da subárvore.`,
+          stepKind: "lr-done",
         });
       }
     } else {
@@ -145,6 +151,7 @@ export function avlInsert(state: TreeState, value: number): OperationResult<Tree
           state: nextState,
           highlights: [{ id: ancestor.id, color: "danger" }],
           narration: `Desbalanceado em ${ancestor.value} (fator ${balance}): caso Direita-Direita. Rotação simples à esquerda.`,
+          stepKind: "rr-detect",
         });
         const newSubRoot = rotateLeft(nextState, ancestorId);
         attachToParent(nextState, parentOfAncestorId, ancestorId, newSubRoot);
@@ -153,6 +160,7 @@ export function avlInsert(state: TreeState, value: number): OperationResult<Tree
           state: nextState,
           highlights: [{ id: newSubRoot, color: "new" }],
           narration: `Rotação concluída. ${nextState.nodes[newSubRoot].value} é a nova raiz da subárvore.`,
+          stepKind: "rr-done",
         });
       } else {
         frames.push({
@@ -160,10 +168,11 @@ export function avlInsert(state: TreeState, value: number): OperationResult<Tree
           state: nextState,
           highlights: [{ id: ancestor.id, color: "danger" }],
           narration: `Desbalanceado em ${ancestor.value} (fator ${balance}): caso Direita-Esquerda. Rotação dupla.`,
+          stepKind: "rl-detect",
         });
         const newRightChild = rotateRight(nextState, rightChildId);
         ancestor.rightId = newRightChild;
-        frames.push({ id: frames.length, state: nextState, narration: "Primeiro, rotação à direita no filho direito." });
+        frames.push({ id: frames.length, state: nextState, narration: "Primeiro, rotação à direita no filho direito.", stepKind: "rl-first" });
         const newSubRoot = rotateLeft(nextState, ancestorId);
         attachToParent(nextState, parentOfAncestorId, ancestorId, newSubRoot);
         frames.push({
@@ -171,6 +180,7 @@ export function avlInsert(state: TreeState, value: number): OperationResult<Tree
           state: nextState,
           highlights: [{ id: newSubRoot, color: "new" }],
           narration: `Depois, rotação à esquerda. ${nextState.nodes[newSubRoot].value} é a nova raiz da subárvore.`,
+          stepKind: "rl-done",
         });
       }
     }
@@ -183,6 +193,7 @@ export function avlInsert(state: TreeState, value: number): OperationResult<Tree
       id: frames.length,
       state: nextState,
       narration: "A árvore continua balanceada (fator entre -1 e 1 em todos os nós). Nenhuma rotação necessária.",
+      stepKind: "balanced",
     });
   }
 
