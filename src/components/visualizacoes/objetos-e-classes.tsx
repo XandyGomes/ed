@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { StructurePlayground } from "@/components/visualizer/StructurePlayground";
 import { ObjetoRenderer } from "@/components/visualizer/renderers/ObjetoRenderer";
 import { makeObjetoState, criarObjetoLivre, criarComClasse } from "@/lib/algorithms/objetoClasse";
+import { OBJETO_LIVRE_CODE, OBJETO_CLASSE_CODE } from "@/lib/code/objetoClasse.code";
 import type { ObjetoState } from "@/lib/algorithms/objetoClasse";
 import type { OperationDef } from "@/lib/types";
 
@@ -36,6 +37,7 @@ export default function ObjetosEClassesPlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={ObjetoRenderer}
+      code={{ livre: OBJETO_LIVRE_CODE, classe: OBJETO_CLASSE_CODE }}
       legend={[
         { label: "aceito pelo setter", color: "var(--color-highlight-success)" },
         { label: "rejeitado pelo setter", color: "var(--color-highlight-danger)" },

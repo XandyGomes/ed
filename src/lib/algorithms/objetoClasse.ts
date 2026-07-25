@@ -66,6 +66,7 @@ export function criarObjetoLivre(
       id: 0,
       state: { ...nextState, checks, area: null, erro: null },
       narration: `Criando um objeto comum, com base = ${baseRaw}, altura = ${alturaRaw}, tipo = ${tipo}, sem nenhuma classe por trás. Nada garante que esses valores fazem sentido.`,
+      stepKind: "create",
     },
   ];
 
@@ -79,6 +80,7 @@ export function criarObjetoLivre(
       area === null
         ? `O objeto foi criado sem nenhum problema (nada impede isso sem uma classe validando), mas calcularArea() não sabe o que fazer com tipo "${tipo}" e retorna nulo. O erro só aparece depois, longe de onde o objeto foi criado.`
         : `O objeto foi criado e calcularArea() devolveu ${area.toFixed(2)}. Funcionou desta vez, mas nada no código impede alguém de passar base negativa, ou um tipo inválido, e só descobrir o problema muito depois.`,
+    stepKind: "no-validation",
   });
 
   return { ok: true, frames, nextState: final };
@@ -106,6 +108,7 @@ export function criarComClasse(
       id: 0,
       state: baseState,
       narration: `new FormaGeometrica(${baseRaw}, ${alturaRaw}, "${tipo}") chama o construtor, que passa cada valor pelo setter correspondente antes de aceitar qualquer coisa.`,
+      stepKind: "start",
     },
   ];
 
@@ -117,6 +120,7 @@ export function criarComClasse(
       state: final,
       highlights: [hl(checkBase.id, "danger")],
       narration: `O setter de base rejeita o valor na hora: "${erro}" O objeto nunca chega a existir com um dado inválido.`,
+      stepKind: "check-base",
     });
     return { ok: true, frames, nextState: final };
   }
@@ -125,6 +129,7 @@ export function criarComClasse(
     state: baseState,
     highlights: [hl(checkBase.id, "success")],
     narration: `Validando base (${baseRaw}): numérico e positivo, aceito.`,
+    stepKind: "check-base",
   });
 
   if (!Number.isFinite(altura) || altura <= 0) {
@@ -135,6 +140,7 @@ export function criarComClasse(
       state: final,
       highlights: [hl(checkBase.id, "success"), hl(checkAltura.id, "danger")],
       narration: `O setter de altura rejeita o valor: "${erro}"`,
+      stepKind: "check-altura",
     });
     return { ok: true, frames, nextState: final };
   }
@@ -143,6 +149,7 @@ export function criarComClasse(
     state: baseState,
     highlights: [hl(checkBase.id, "success"), hl(checkAltura.id, "success")],
     narration: `Validando altura (${alturaRaw}): numérico e positivo, aceito.`,
+    stepKind: "check-altura",
   });
 
   if (!["R", "T", "E"].includes(tipo)) {
@@ -153,6 +160,7 @@ export function criarComClasse(
       state: final,
       highlights: [hl(checkBase.id, "success"), hl(checkAltura.id, "success"), hl(checkTipo.id, "danger")],
       narration: `O setter de tipo rejeita o valor: "${erro}"`,
+      stepKind: "check-tipo",
     });
     return { ok: true, frames, nextState: final };
   }
@@ -161,6 +169,7 @@ export function criarComClasse(
     state: baseState,
     highlights: [hl(checkBase.id, "success"), hl(checkAltura.id, "success"), hl(checkTipo.id, "success")],
     narration: `Validando tipo ("${tipo}"): valor reconhecido, aceito.`,
+    stepKind: "check-tipo",
   });
 
   const area = calcArea(base, altura, tipo) as number;
@@ -170,6 +179,7 @@ export function criarComClasse(
     state: final,
     highlights: checks.map((c) => hl(c.id, "success")),
     narration: `Todos os setters aceitaram os valores, o objeto existe com dados garantidamente válidos. area = ${area.toFixed(2)}.`,
+    stepKind: "success",
   });
 
   return { ok: true, frames, nextState: final };
