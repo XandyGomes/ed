@@ -5,6 +5,7 @@ import { StructurePlayground } from "@/components/visualizer/StructurePlayground
 import { LinkedListRenderer } from "@/components/visualizer/renderers/LinkedListRenderer";
 import { makeArrayState } from "@/lib/algorithms/common";
 import { llInsertHead, llInsertTail, llRemoveHead, llSearch } from "@/lib/algorithms/linkedList";
+import { LL_INSERT_HEAD_CODE, LL_INSERT_TAIL_CODE, LL_REMOVE_HEAD_CODE, LL_SEARCH_CODE } from "@/lib/code/linkedList.code";
 import type { ArrayState, OperationDef } from "@/lib/types";
 
 const operations: OperationDef<ArrayState>[] = [
@@ -41,6 +42,12 @@ export default function ListasLigadasPlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={LinkedListRenderer}
+      code={{
+        "inserir-inicio": LL_INSERT_HEAD_CODE,
+        "inserir-fim": LL_INSERT_TAIL_CODE,
+        "remover-inicio": LL_REMOVE_HEAD_CODE,
+        buscar: LL_SEARCH_CODE,
+      }}
       legend={[
         { label: "recém-inserido", color: "var(--color-highlight-new)" },
         { label: "atual (percorrendo)", color: "var(--color-highlight-visit)" },

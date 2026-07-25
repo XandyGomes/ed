@@ -14,13 +14,14 @@ export function dllInsertHead(state: ArrayState, value: number): OperationResult
   nextState.items.unshift(newItem);
 
   const frames: FrameSequence<ArrayState> = [
-    { id: 0, state, pointers: pointers(state), narration: `Criando o nó ${value}, com prev = NULL e next = antiga cabeça...` },
+    { id: 0, state, pointers: pointers(state), narration: `Criando o nó ${value}, com prev = NULL e next = antiga cabeça...`, stepKind: "create" },
     {
       id: 1,
       state: nextState,
       highlights: [{ id: newItem.id, color: "new" }],
       pointers: pointers(nextState),
       narration: `A antiga cabeça agora tem prev apontando para o novo nó. Inserir no início é O(1).`,
+      stepKind: "link",
     },
   ];
   return { ok: true, frames, nextState };
@@ -38,6 +39,7 @@ export function dllInsertTail(state: ArrayState, value: number): OperationResult
       state,
       pointers: pointers(state),
       narration: `Graças ao ponteiro cauda, acessamos o último nó diretamente, sem percorrer a lista.`,
+      stepKind: "start",
     },
     {
       id: 1,
@@ -45,6 +47,7 @@ export function dllInsertTail(state: ArrayState, value: number): OperationResult
       highlights: [{ id: newItem.id, color: "new" }],
       pointers: pointers(nextState),
       narration: `${value} inserido no final. Com ponteiro de cauda, inserir no final é O(1) (diferente da lista simples!).`,
+      stepKind: "link",
     },
   ];
   return { ok: true, frames, nextState };
@@ -63,12 +66,14 @@ export function dllRemoveHead(state: ArrayState): OperationResult<ArrayState> {
       highlights: [{ id: head.id, color: "danger" }],
       pointers: pointers(state),
       narration: `Removendo a cabeça (${head.value}). O segundo nó vira a nova cabeça, com prev = NULL.`,
+      stepKind: "identify",
     },
     {
       id: 1,
       state: nextState,
       pointers: pointers(nextState),
       narration: `${head.value} removido. Remover do início é O(1).`,
+      stepKind: "remove",
     },
   ];
   return { ok: true, frames, nextState };
@@ -87,12 +92,14 @@ export function dllRemoveTail(state: ArrayState): OperationResult<ArrayState> {
       highlights: [{ id: tail.id, color: "danger" }],
       pointers: pointers(state),
       narration: `Removendo a cauda (${tail.value}). Graças ao ponteiro prev dela, achamos o novo último nó direto.`,
+      stepKind: "identify",
     },
     {
       id: 1,
       state: nextState,
       pointers: pointers(nextState),
       narration: `${tail.value} removido. Remover do final é O(1) aqui (na lista simples seria O(n), sem o ponteiro prev).`,
+      stepKind: "remove",
     },
   ];
   return { ok: true, frames, nextState };
@@ -103,7 +110,7 @@ export function dllSearch(state: ArrayState, target: number): OperationResult<Ar
   if (state.items.length === 0) return { ok: false, error: "A lista está vazia." };
 
   const frames: FrameSequence<ArrayState> = [
-    { id: 0, state, pointers: pointers(state), narration: `Buscando ${target} a partir da cabeça...` },
+    { id: 0, state, pointers: pointers(state), narration: `Buscando ${target} a partir da cabeça...`, stepKind: "start" },
   ];
 
   for (const item of state.items) {
@@ -114,6 +121,7 @@ export function dllSearch(state: ArrayState, target: number): OperationResult<Ar
         highlights: [{ id: item.id, color: "success" }],
         pointers: { ...pointers(state), atual: item.id },
         narration: `Encontrado! atual aponta para o nó com valor ${item.value}.`,
+        stepKind: "found",
       });
       return { ok: true, frames, nextState: state };
     }
@@ -123,6 +131,7 @@ export function dllSearch(state: ArrayState, target: number): OperationResult<Ar
       highlights: [{ id: item.id, color: "compare" }],
       pointers: { ...pointers(state), atual: item.id },
       narration: `atual = ${item.value} ≠ ${target}. Seguindo o ponteiro next...`,
+      stepKind: "compare",
     });
   }
 
@@ -131,6 +140,7 @@ export function dllSearch(state: ArrayState, target: number): OperationResult<Ar
     state,
     pointers: pointers(state),
     narration: `${target} não está na lista.`,
+    stepKind: "not-found",
   });
   return { ok: true, frames, nextState: state };
 }
