@@ -8,7 +8,7 @@ import { CodePanel } from "@/components/visualizer/CodePanel";
 import { makeArrayState } from "@/lib/algorithms/common";
 import { bubbleSort } from "@/lib/algorithms/bubbleSort";
 import { BUBBLE_SORT_CODE } from "@/lib/code/bubbleSort.code";
-import type { CodeLanguage } from "@/lib/code/bubbleSort.code";
+import type { CodeLanguage } from "@/lib/code/languages";
 import { playTone } from "@/lib/sound";
 import type { FrameSequence, ArrayState } from "@/lib/types";
 
@@ -83,7 +83,7 @@ export default function BubbleSortPlayground() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[3fr_2fr]">
         <CodePanel
           language={language}
           onLanguageChange={setLanguage}
@@ -91,7 +91,7 @@ export default function BubbleSortPlayground() {
           stepKind={visualizer.currentFrame?.stepKind}
         />
 
-        <div className="flex flex-col gap-4">
+        <div className="flex min-w-0 flex-col gap-4">
           <div className="glass-panel rounded-2xl">
             <ArrayRenderer
               state={visualizer.currentFrame?.state ?? { items: [] }}

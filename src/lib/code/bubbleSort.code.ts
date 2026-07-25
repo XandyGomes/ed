@@ -1,11 +1,4 @@
-export type CodeLanguage = "java" | "python" | "cpp" | "javascript";
-
-export const LANGUAGE_LABEL: Record<CodeLanguage, string> = {
-  java: "Java",
-  python: "Python",
-  cpp: "C++",
-  javascript: "JavaScript",
-};
+import type { CodeLanguage } from "./languages";
 
 export type LanguageSource = {
   code: string;
