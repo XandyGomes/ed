@@ -1,6 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { CodePanel } from "@/components/visualizer/CodePanel";
+import { BIG_O_CODE } from "@/lib/code/bigO.code";
+import type { CodeLanguage } from "@/lib/code/languages";
 
 const N_MAX = 30;
 const WIDTH = 560;
@@ -27,6 +30,7 @@ function toY(value: number) {
 
 export default function BigOPlayground() {
   const [n, setN] = useState(10);
+  const [language, setLanguage] = useState<CodeLanguage>("java");
 
   const paths = useMemo(
     () =>
@@ -103,6 +107,8 @@ export default function BigOPlayground() {
           diferente para cada complexidade, mesmo com o mesmo n.
         </p>
       </div>
+
+      <CodePanel language={language} onLanguageChange={setLanguage} source={BIG_O_CODE[language]} />
     </div>
   );
 }
