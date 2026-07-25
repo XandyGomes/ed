@@ -5,6 +5,7 @@ import { StructurePlayground } from "@/components/visualizer/StructurePlayground
 import { HeapRenderer } from "@/components/visualizer/renderers/HeapRenderer";
 import { makeArrayState } from "@/lib/algorithms/common";
 import { heapInsert, heapExtractMin } from "@/lib/algorithms/heap";
+import { HEAP_INSERT_CODE, HEAP_EXTRACT_CODE } from "@/lib/code/heap.code";
 import type { ArrayState, OperationDef } from "@/lib/types";
 
 const operations: OperationDef<ArrayState>[] = [
@@ -29,6 +30,7 @@ export default function HeapsPlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={HeapRenderer}
+      code={{ inserir: HEAP_INSERT_CODE, extrair: HEAP_EXTRACT_CODE }}
       legend={[
         { label: "comparando / trocando", color: "var(--color-highlight-compare)" },
         { label: "restaurado / raiz", color: "var(--color-highlight-success)" },

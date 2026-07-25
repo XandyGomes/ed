@@ -26,12 +26,13 @@ export function heapInsert(state: ArrayState, value: number): OperationResult<Ar
   const items = [...state.items, newItem];
 
   const frames: FrameSequence<ArrayState> = [
-    { id: 0, state, narration: `Inserindo ${value} na última posição do array (heap quase completo)...` },
+    { id: 0, state, narration: `Inserindo ${value} na última posição do array (heap quase completo)...`, stepKind: "append" },
     {
       id: 1,
       state: { items: [...items] },
       highlights: [{ id: newItem.id, color: "new" }],
       narration: `${value} adicionado. Agora vamos restaurar a propriedade do heap (sift-up).`,
+      stepKind: "sift-start",
     },
   ];
 
@@ -44,6 +45,7 @@ export function heapInsert(state: ArrayState, value: number): OperationResult<Ar
         state: { items: [...items] },
         highlights: [{ id: items[i].id, color: "success" }],
         narration: `Pai (${items[pIndex].value}) já é menor ou igual: propriedade do heap restaurada.`,
+        stepKind: "restored",
       });
       return { ok: true, frames, nextState: { items } };
     }
@@ -55,6 +57,7 @@ export function heapInsert(state: ArrayState, value: number): OperationResult<Ar
         { id: items[pIndex].id, color: "compare" },
       ],
       narration: `${items[i].value} < pai (${items[pIndex].value}): trocar (sift-up).`,
+      stepKind: "compare",
     });
     [items[i], items[pIndex]] = [items[pIndex], items[i]];
     frames.push({
@@ -62,6 +65,7 @@ export function heapInsert(state: ArrayState, value: number): OperationResult<Ar
       state: { items: [...items] },
       highlights: [{ id: items[pIndex].id, color: "new" }],
       narration: "Trocado. Continuando a subir...",
+      stepKind: "swap",
     });
     i = pIndex;
   }
@@ -71,6 +75,7 @@ export function heapInsert(state: ArrayState, value: number): OperationResult<Ar
     state: { items: [...items] },
     highlights: [{ id: items[0].id, color: "success" }],
     narration: `${value} chegou à raiz: é o menor valor do heap. Inserção é O(log n).`,
+    stepKind: "restored",
   });
   return { ok: true, frames, nextState: { items } };
 }
@@ -81,12 +86,12 @@ export function heapExtractMin(state: ArrayState): OperationResult<ArrayState> {
   const items = [...state.items];
   const min = items[0];
   const frames: FrameSequence<ArrayState> = [
-    { id: 0, state, highlights: [{ id: min.id, color: "danger" }], narration: `Removendo a raiz (o mínimo): ${min.value}.` },
+    { id: 0, state, highlights: [{ id: min.id, color: "danger" }], narration: `Removendo a raiz (o mínimo): ${min.value}.`, stepKind: "remove-root" },
   ];
 
   const last = items.pop() as ArrayItem;
   if (items.length === 0) {
-    frames.push({ id: frames.length, state: { items: [] }, narration: `${min.value} removido. O heap ficou vazio.` });
+    frames.push({ id: frames.length, state: { items: [] }, narration: `${min.value} removido. O heap ficou vazio.`, stepKind: "empty" });
     return { ok: true, frames, nextState: { items: [] } };
   }
 
@@ -96,6 +101,7 @@ export function heapExtractMin(state: ArrayState): OperationResult<ArrayState> {
     state: { items: [...items] },
     highlights: [{ id: last.id, color: "new" }],
     narration: `O último elemento (${last.value}) move para a raiz. Restaurando a propriedade do heap (sift-down)...`,
+    stepKind: "move-last",
   });
 
   let i = 0;
@@ -112,6 +118,7 @@ export function heapExtractMin(state: ArrayState): OperationResult<ArrayState> {
         state: { items: [...items] },
         highlights: [{ id: items[i].id, color: "success" }],
         narration: `${items[i].value} já é menor que os filhos: propriedade do heap restaurada.`,
+        stepKind: "restored",
       });
       break;
     }
@@ -124,12 +131,14 @@ export function heapExtractMin(state: ArrayState): OperationResult<ArrayState> {
         { id: items[smallest].id, color: "compare" },
       ],
       narration: `Filho menor (${items[smallest].value}) < pai (${items[i].value}): trocar (sift-down).`,
+      stepKind: "compare",
     });
     [items[i], items[smallest]] = [items[smallest], items[i]];
     frames.push({
       id: frames.length,
       state: { items: [...items] },
       narration: "Trocado. Continuando a descer...",
+      stepKind: "swap",
     });
     i = smallest;
   }

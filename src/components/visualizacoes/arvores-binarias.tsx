@@ -5,6 +5,14 @@ import { StructurePlayground } from "@/components/visualizer/StructurePlayground
 import { TreeRenderer } from "@/components/visualizer/renderers/TreeRenderer";
 import { makeTreeState } from "@/lib/algorithms/treeCommon";
 import { bstInsert, bstSearch, bstRemove, bstTraverse } from "@/lib/algorithms/bst";
+import {
+  BST_INSERT_CODE,
+  BST_SEARCH_CODE,
+  BST_REMOVE_CODE,
+  BST_TRAVERSE_PRE_CODE,
+  BST_TRAVERSE_IN_CODE,
+  BST_TRAVERSE_POS_CODE,
+} from "@/lib/code/bst.code";
 import type { OperationDef, TreeState } from "@/lib/types";
 
 const operations: OperationDef<TreeState>[] = [
@@ -51,6 +59,14 @@ export default function ArvoresBinariasPlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={TreeRenderer}
+      code={{
+        inserir: BST_INSERT_CODE,
+        buscar: BST_SEARCH_CODE,
+        remover: BST_REMOVE_CODE,
+        "pre-ordem": BST_TRAVERSE_PRE_CODE,
+        "em-ordem": BST_TRAVERSE_IN_CODE,
+        "pos-ordem": BST_TRAVERSE_POS_CODE,
+      }}
       legend={[
         { label: "comparando", color: "var(--color-highlight-compare)" },
         { label: "visitado", color: "var(--color-highlight-visit)" },
