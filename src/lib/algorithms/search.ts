@@ -5,7 +5,7 @@ export function linearSearch(state: ArrayState, target: number): OperationResult
     return { ok: false, error: "Informe um valor numérico para buscar." };
   }
   const frames: FrameSequence<ArrayState> = [
-    { id: 0, state, narration: `Buscando o valor ${target}, começando do início do array.` },
+    { id: 0, state, narration: `Buscando o valor ${target}, começando do início do array.`, stepKind: "start" },
   ];
 
   for (let i = 0; i < state.items.length; i++) {
@@ -16,6 +16,7 @@ export function linearSearch(state: ArrayState, target: number): OperationResult
         state,
         highlights: [{ id: item.id, color: "success" }],
         narration: `array[${i}] = ${item.value}. Encontrado após examinar ${i + 1} elemento(s).`,
+        stepKind: "found",
       });
       return { ok: true, frames, nextState: state };
     }
@@ -24,6 +25,7 @@ export function linearSearch(state: ArrayState, target: number): OperationResult
       state,
       highlights: [{ id: item.id, color: "compare" }],
       narration: `array[${i}] = ${item.value} ≠ ${target}. Continuando...`,
+      stepKind: "compare",
     });
   }
 
@@ -31,6 +33,7 @@ export function linearSearch(state: ArrayState, target: number): OperationResult
     id: frames.length,
     state,
     narration: `Valor ${target} não encontrado. Percorremos todos os ${state.items.length} elementos, pior caso O(n).`,
+    stepKind: "not-found",
   });
   return { ok: true, frames, nextState: state };
 }
@@ -51,6 +54,7 @@ export function binarySearch(state: ArrayState, target: number): OperationResult
       id: 0,
       state,
       narration: `Buscando ${target} com busca binária (o array precisa estar ordenado).`,
+      stepKind: "start",
     },
   ];
 
@@ -73,6 +77,7 @@ export function binarySearch(state: ArrayState, target: number): OperationResult
         highlights: [{ id: midItem.id, color: "success" }],
         pointers,
         narration: `meio = ${mid} → array[${mid}] = ${midItem.value}. Encontrado!`,
+        stepKind: "found",
       });
       return { ok: true, frames, nextState: state };
     }
@@ -83,6 +88,7 @@ export function binarySearch(state: ArrayState, target: number): OperationResult
       highlights: [{ id: midItem.id, color: "compare" }],
       pointers,
       narration: `meio = ${mid} → array[${mid}] = ${midItem.value}. Comparando com ${target}...`,
+      stepKind: "compare",
     });
 
     if (midItem.value < target) {
@@ -91,6 +97,7 @@ export function binarySearch(state: ArrayState, target: number): OperationResult
         state,
         pointers,
         narration: `${midItem.value} < ${target}: descartamos a metade esquerda. Novo baixo = ${mid + 1}.`,
+        stepKind: "go-right",
       });
       low = mid + 1;
     } else {
@@ -99,6 +106,7 @@ export function binarySearch(state: ArrayState, target: number): OperationResult
         state,
         pointers,
         narration: `${midItem.value} > ${target}: descartamos a metade direita. Novo alto = ${mid - 1}.`,
+        stepKind: "go-left",
       });
       high = mid - 1;
     }
@@ -108,6 +116,7 @@ export function binarySearch(state: ArrayState, target: number): OperationResult
     id: frames.length,
     state,
     narration: `Valor ${target} não encontrado. A cada passo eliminamos metade do array, O(log n).`,
+    stepKind: "not-found",
   });
   return { ok: true, frames, nextState: state };
 }

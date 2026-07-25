@@ -5,6 +5,7 @@ import { StructurePlayground } from "@/components/visualizer/StructurePlayground
 import { StackRenderer } from "@/components/visualizer/renderers/StackRenderer";
 import { makeArrayState } from "@/lib/algorithms/common";
 import { stackPush, stackPop, stackPeek } from "@/lib/algorithms/stack";
+import { STACK_PUSH_CODE, STACK_POP_CODE, STACK_PEEK_CODE } from "@/lib/code/stack.code";
 import type { ArrayState, OperationDef } from "@/lib/types";
 
 const operations: OperationDef<ArrayState>[] = [
@@ -34,6 +35,7 @@ export default function PilhasPlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={StackRenderer}
+      code={{ push: STACK_PUSH_CODE, pop: STACK_POP_CODE, peek: STACK_PEEK_CODE }}
       legend={[
         { label: "recém-inserido", color: "var(--color-highlight-new)" },
         { label: "removendo", color: "var(--color-highlight-danger)" },

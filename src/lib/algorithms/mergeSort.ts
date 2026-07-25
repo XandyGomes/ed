@@ -10,11 +10,12 @@ export function mergeSort(state: ArrayState): OperationResult<ArrayState> {
       id: 0,
       state: { items: [...items] },
       narration: "Iniciando Merge Sort: dividir o array ao meio recursivamente, depois intercalar as metades já ordenadas.",
+      stepKind: "start",
     },
   ];
 
-  function pushFrame(highlights: Highlight[], narration: string) {
-    frames.push({ id: frames.length, state: { items: [...items] }, highlights, narration });
+  function pushFrame(highlights: Highlight[], narration: string, stepKind: string) {
+    frames.push({ id: frames.length, state: { items: [...items] }, highlights, narration, stepKind });
   }
 
   function merge(left: number, mid: number, right: number) {
@@ -22,7 +23,8 @@ export function mergeSort(state: ArrayState): OperationResult<ArrayState> {
     const rightArr = items.slice(mid + 1, right + 1);
     pushFrame(
       leftArr.map((it) => hl(it.id, "visit")).concat(rightArr.map((it) => hl(it.id, "compare"))),
-      `Intercalando [${leftArr.map((i) => i.value).join(", ")}] com [${rightArr.map((i) => i.value).join(", ")}]...`
+      `Intercalando [${leftArr.map((i) => i.value).join(", ")}] com [${rightArr.map((i) => i.value).join(", ")}]...`,
+      "merge-start"
     );
 
     let i = 0;
@@ -51,7 +53,8 @@ export function mergeSort(state: ArrayState): OperationResult<ArrayState> {
 
     pushFrame(
       items.slice(left, right + 1).map((it) => hl(it.id, "success")),
-      `Intercalado: [${items.slice(left, right + 1).map((i) => i.value).join(", ")}].`
+      `Intercalado: [${items.slice(left, right + 1).map((i) => i.value).join(", ")}].`,
+      "merge-done"
     );
   }
 
@@ -60,7 +63,8 @@ export function mergeSort(state: ArrayState): OperationResult<ArrayState> {
     const mid = Math.floor((left + right) / 2);
     pushFrame(
       items.slice(left, right + 1).map((it) => hl(it.id, "compare")),
-      `Dividindo [${items.slice(left, right + 1).map((i) => i.value).join(", ")}] ao meio...`
+      `Dividindo [${items.slice(left, right + 1).map((i) => i.value).join(", ")}] ao meio...`,
+      "divide"
     );
     sort(left, mid);
     sort(mid + 1, right);
@@ -73,6 +77,7 @@ export function mergeSort(state: ArrayState): OperationResult<ArrayState> {
     state: { items: [...items] },
     highlights: items.map((it) => hl(it.id, "success")),
     narration: `Array ordenado: ${items.map((i) => i.value).join(", ")}.`,
+    stepKind: "done",
   });
 
   return { ok: true, frames, nextState: { items } };

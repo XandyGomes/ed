@@ -3,6 +3,7 @@
 import { StructurePlayground } from "@/components/visualizer/StructurePlayground";
 import { StackRenderer } from "@/components/visualizer/renderers/StackRenderer";
 import { recursaoFatorial } from "@/lib/algorithms/recursion";
+import { FATORIAL_CODE } from "@/lib/code/recursion.code";
 import type { ArrayState, OperationDef } from "@/lib/types";
 
 const operations: OperationDef<ArrayState>[] = [
@@ -22,6 +23,7 @@ export default function RecursividadePlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={StackRenderer}
+      code={{ fatorial: FATORIAL_CODE }}
       legend={[
         { label: "nova chamada", color: "var(--color-highlight-new)" },
         { label: "caso base", color: "var(--color-highlight-success)" },
