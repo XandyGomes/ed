@@ -6,6 +6,13 @@ import { GraphRenderer } from "@/components/visualizer/renderers/GraphRenderer";
 import { GraphRepresentations } from "@/components/visualizacoes/GraphRepresentations";
 import { makeGraphState, graphBFS, graphDFS, graphAddNode, graphAddEdge } from "@/lib/algorithms/graph";
 import { graphDijkstra } from "@/lib/algorithms/dijkstra";
+import {
+  GRAPH_BFS_CODE,
+  GRAPH_DFS_CODE,
+  GRAPH_DIJKSTRA_CODE,
+  GRAPH_ADD_NODE_CODE,
+  GRAPH_ADD_EDGE_CODE,
+} from "@/lib/code/graph.code";
 import type { GraphState } from "@/lib/algorithms/graph";
 import type { OperationDef } from "@/lib/types";
 
@@ -57,6 +64,13 @@ export default function GrafosPlayground() {
         operations={operations}
         Renderer={GraphRenderer}
         onStateChange={setLiveState}
+        code={{
+          bfs: GRAPH_BFS_CODE,
+          dfs: GRAPH_DFS_CODE,
+          dijkstra: GRAPH_DIJKSTRA_CODE,
+          "add-node": GRAPH_ADD_NODE_CODE,
+          "add-edge": GRAPH_ADD_EDGE_CODE,
+        }}
         legend={[
           { label: "atual", color: "var(--color-highlight-compare)" },
           { label: "na fila/pilha", color: "var(--color-highlight-new)" },

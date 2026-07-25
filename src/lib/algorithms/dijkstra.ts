@@ -26,6 +26,7 @@ export function graphDijkstra(state: GraphState, startIdRaw: string): OperationR
       state,
       pointers: { atual: startId },
       narration: `Iniciando Dijkstra a partir de ${startId}. Distâncias: ${formatDist(dist, nodeIds)}.`,
+      stepKind: "start",
     },
   ];
 
@@ -47,6 +48,7 @@ export function graphDijkstra(state: GraphState, startIdRaw: string): OperationR
       highlights: [...visited].map((id) => hl(id, id === currentId ? "compare" : "success")),
       pointers: { atual: currentId },
       narration: `Processando ${currentId} (distância definitiva: ${dist[currentId]}).`,
+      stepKind: "process",
     });
 
     for (const { id: neighborId, weight } of neighborsOf(state, currentId)) {
@@ -63,6 +65,7 @@ export function graphDijkstra(state: GraphState, startIdRaw: string): OperationR
             .concat([hl(neighborId, "new")]),
           pointers: { atual: currentId },
           narration: `Relaxando aresta ${currentId}-${neighborId} (peso ${weight}): ${old === Infinity ? "∞" : old} → ${newDist}. Distâncias: ${formatDist(dist, nodeIds)}.`,
+          stepKind: "relax",
         });
       }
     }

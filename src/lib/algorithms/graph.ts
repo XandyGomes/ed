@@ -81,13 +81,14 @@ export function graphAddNode(state: GraphState, labelRaw: string): OperationResu
   const nextState: GraphState = { nodes, edges: state.edges };
 
   const frames: FrameSequence<GraphState> = [
-    { id: 0, state, narration: `Adicionando o nó ${label}...` },
+    { id: 0, state, narration: `Adicionando o nó ${label}...`, stepKind: "prepare" },
     {
       id: 1,
       state: nextState,
       highlights: [hl(label, "new")],
       pointers: { atual: label },
       narration: `Nó ${label} adicionado. O grafo agora tem ${nodes.length} nós.`,
+      stepKind: "add",
     },
   ];
   return { ok: true, frames, nextState };
@@ -122,12 +123,14 @@ export function graphAddEdge(
       state,
       highlights: [hl(from, "new"), hl(to, "new")],
       narration: `Conectando ${from} e ${to} com peso ${weight}...`,
+      stepKind: "prepare",
     },
     {
       id: 1,
       state: nextState,
       highlights: [hl(from, "new"), hl(to, "new")],
       narration: `Aresta ${from}-${to} (peso ${weight}) adicionada.`,
+      stepKind: "add",
     },
   ];
   return { ok: true, frames, nextState };
@@ -149,7 +152,7 @@ export function graphBFS(state: GraphState, startIdRaw: string): OperationResult
   const queue: string[] = [startId];
   const order: string[] = [];
   const frames: FrameSequence<GraphState> = [
-    { id: 0, state, pointers: { atual: startId }, narration: `Iniciando BFS a partir de ${startId}. Fila: [${startId}].` },
+    { id: 0, state, pointers: { atual: startId }, narration: `Iniciando BFS a partir de ${startId}. Fila: [${startId}].`, stepKind: "start" },
   ];
 
   while (queue.length > 0) {
@@ -161,6 +164,7 @@ export function graphBFS(state: GraphState, startIdRaw: string): OperationResult
       highlights: order.map((id) => hl(id, id === current ? "compare" : "visit")),
       pointers: { atual: current },
       narration: `Visitando ${current}.`,
+      stepKind: "visit",
     });
 
     const neighbors = neighborsOf(state, current)
@@ -178,6 +182,7 @@ export function graphBFS(state: GraphState, startIdRaw: string): OperationResult
           .concat(neighbors.map((id) => hl(id, "new"))),
         pointers: { atual: current },
         narration: `Vizinhos não visitados de ${current} entram na fila: ${neighbors.join(", ")}. Fila: [${queue.join(", ")}].`,
+        stepKind: "add-neighbors",
       });
     }
   }
@@ -211,6 +216,7 @@ export function graphDFS(state: GraphState, startIdRaw: string): OperationResult
       highlights: order.map((id) => hl(id, id === nodeId ? "compare" : "visit")),
       pointers: { atual: nodeId },
       narration: `Visitando ${nodeId}.`,
+      stepKind: "visit",
     });
 
     const neighbors = neighborsOf(state, nodeId)
@@ -224,6 +230,7 @@ export function graphDFS(state: GraphState, startIdRaw: string): OperationResult
         highlights: order.map((id) => hl(id, "visit")),
         pointers: { atual: nodeId },
         narration: `De ${nodeId}, descendo para ${neighborId}...`,
+        stepKind: "descend",
       });
       visit(neighborId);
     }
