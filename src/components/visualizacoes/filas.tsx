@@ -5,6 +5,7 @@ import { StructurePlayground } from "@/components/visualizer/StructurePlayground
 import { QueueRenderer } from "@/components/visualizer/renderers/QueueRenderer";
 import { makeArrayState } from "@/lib/algorithms/common";
 import { queueEnqueue, queueDequeue } from "@/lib/algorithms/queue";
+import { QUEUE_ENQUEUE_CODE, QUEUE_DEQUEUE_CODE } from "@/lib/code/queue.code";
 import type { ArrayState, OperationDef } from "@/lib/types";
 
 const operations: OperationDef<ArrayState>[] = [
@@ -29,6 +30,7 @@ export default function FilasPlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={QueueRenderer}
+      code={{ enqueue: QUEUE_ENQUEUE_CODE, dequeue: QUEUE_DEQUEUE_CODE }}
       legend={[
         { label: "recém-inserido", color: "var(--color-highlight-new)" },
         { label: "removendo", color: "var(--color-highlight-danger)" },

@@ -5,6 +5,7 @@ import { StructurePlayground } from "@/components/visualizer/StructurePlayground
 import { ArrayRenderer } from "@/components/visualizer/renderers/ArrayRenderer";
 import { makeArrayState } from "@/lib/algorithms/common";
 import { mergeSort } from "@/lib/algorithms/mergeSort";
+import { MERGE_SORT_CODE } from "@/lib/code/mergeSort.code";
 import type { ArrayState, OperationDef } from "@/lib/types";
 
 const operations: OperationDef<ArrayState>[] = [
@@ -23,6 +24,7 @@ export default function MergeSortPlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={ArrayRenderer}
+      code={{ ordenar: MERGE_SORT_CODE }}
       legend={[
         { label: "dividindo", color: "var(--color-highlight-compare)" },
         { label: "metade esquerda", color: "var(--color-highlight-visit)" },

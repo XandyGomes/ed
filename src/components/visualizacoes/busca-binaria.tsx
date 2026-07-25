@@ -5,6 +5,7 @@ import { StructurePlayground } from "@/components/visualizer/StructurePlayground
 import { ArrayRenderer } from "@/components/visualizer/renderers/ArrayRenderer";
 import { makeArrayState } from "@/lib/algorithms/common";
 import { binarySearch } from "@/lib/algorithms/search";
+import { BINARY_SEARCH_CODE } from "@/lib/code/search.code";
 import type { ArrayState, OperationDef } from "@/lib/types";
 
 const operations: OperationDef<ArrayState>[] = [
@@ -24,6 +25,7 @@ export default function BuscaBinariaPlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={ArrayRenderer}
+      code={{ buscar: BINARY_SEARCH_CODE }}
       legend={[
         { label: "meio (comparando)", color: "var(--color-highlight-compare)" },
         { label: "encontrado", color: "var(--color-highlight-success)" },

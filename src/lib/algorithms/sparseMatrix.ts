@@ -35,7 +35,7 @@ export function makeSparseMatrixState(): SparseMatrixState {
 
 export function gerarRepresentacaoEsparsa(state: SparseMatrixState): OperationResult<SparseMatrixState> {
   const frames: FrameSequence<SparseMatrixState> = [
-    { id: 0, state, narration: `Percorrendo a matriz ${state.rows}×${state.cols} célula por célula, linha por linha...` },
+    { id: 0, state, narration: `Percorrendo a matriz ${state.rows}×${state.cols} célula por célula, linha por linha...`, stepKind: "start" },
   ];
 
   const foundIds: string[] = [];
@@ -46,6 +46,7 @@ export function gerarRepresentacaoEsparsa(state: SparseMatrixState): OperationRe
         state,
         highlights: foundIds.map((id) => hl(id, "success")).concat([hl(cell.id, "compare")]),
         narration: `(${cell.row}, ${cell.col}) = 0: não entra na lista esparsa.`,
+        stepKind: "check-zero",
       });
     } else {
       foundIds.push(cell.id);
@@ -54,6 +55,7 @@ export function gerarRepresentacaoEsparsa(state: SparseMatrixState): OperationRe
         state,
         highlights: foundIds.map((id) => hl(id, "success")),
         narration: `(${cell.row}, ${cell.col}) = ${cell.value}: valor não-zero, adiciona à lista esparsa!`,
+        stepKind: "check-nonzero",
       });
     }
   }
@@ -65,6 +67,7 @@ export function gerarRepresentacaoEsparsa(state: SparseMatrixState): OperationRe
     state,
     highlights: foundIds.map((id) => hl(id, "success")),
     narration: `Pronto! De ${total} células, só ${foundIds.length} são não-zero (${pct}% preenchida). A representação esparsa guarda só essas ${foundIds.length} triplas (linha, coluna, valor), economizando memória.`,
+    stepKind: "done",
   });
 
   return { ok: true, frames, nextState: state };
@@ -77,6 +80,7 @@ export function reconstruirMatrizDensa(state: SparseMatrixState): OperationResul
       id: 0,
       state,
       narration: `Partindo da lista esparsa com ${naoZero.length} triplas (linha, coluna, valor), reconstruindo a matriz densa ${state.rows}×${state.cols} e preenchendo o resto com zero.`,
+      stepKind: "start",
     },
   ];
 
@@ -88,6 +92,7 @@ export function reconstruirMatrizDensa(state: SparseMatrixState): OperationResul
       state,
       highlights: colocadas.map((id) => hl(id, "success")),
       narration: `Colocando o valor ${cell.value} na posição (${cell.row}, ${cell.col})...`,
+      stepKind: "place",
     });
   }
 
@@ -96,6 +101,7 @@ export function reconstruirMatrizDensa(state: SparseMatrixState): OperationResul
     state,
     highlights: colocadas.map((id) => hl(id, "success")),
     narration: `Matriz densa reconstruída: todas as posições que não estavam na lista esparsa continuam zero.`,
+    stepKind: "done",
   });
 
   return { ok: true, frames, nextState: state };

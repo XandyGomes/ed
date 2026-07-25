@@ -13,12 +13,14 @@ export function arrayAccess(state: ArrayState, index: number): OperationResult<A
       state,
       highlights: [{ id: item.id, color: "visit" }],
       narration: `Acessando o índice ${index}...`,
+      stepKind: "access",
     },
     {
       id: 1,
       state,
       highlights: [{ id: item.id, color: "success" }],
       narration: `array[${index}] = ${item.value}. Acesso direto por índice é O(1).`,
+      stepKind: "done",
     },
   ];
   return { ok: true, frames, nextState: state };
@@ -44,6 +46,7 @@ export function arrayInsertAt(
       id: 0,
       state,
       narration: `Preparando para inserir ${value} na posição ${index}.`,
+      stepKind: "prepare",
     },
     {
       id: 1,
@@ -53,6 +56,7 @@ export function arrayInsertAt(
         index < state.items.length
           ? `${value} inserido na posição ${index}. Os itens seguintes deslocaram uma posição à direita (O(n)).`
           : `${value} inserido no final do array (O(1) amortizado).`,
+      stepKind: "insert",
     },
   ];
   return { ok: true, frames, nextState };
@@ -72,11 +76,13 @@ export function arrayRemoveAt(state: ArrayState, index: number): OperationResult
       state,
       highlights: [{ id: item.id, color: "danger" }],
       narration: `Removendo o item na posição ${index} (valor ${item.value}).`,
+      stepKind: "remove",
     },
     {
       id: 1,
       state: nextState,
       narration: `Item removido. Os itens seguintes deslocaram uma posição à esquerda (O(n)).`,
+      stepKind: "shift",
     },
   ];
   return { ok: true, frames, nextState };

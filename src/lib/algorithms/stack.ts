@@ -11,13 +11,14 @@ export function stackPush(state: ArrayState, value: number): OperationResult<Arr
   nextState.items.push(newItem);
 
   const frames: FrameSequence<ArrayState> = [
-    { id: 0, state, narration: `Empilhando (push) o valor ${value}...` },
+    { id: 0, state, narration: `Empilhando (push) o valor ${value}...`, stepKind: "prepare" },
     {
       id: 1,
       state: nextState,
       highlights: [{ id: newItem.id, color: "new" }],
       pointers: { topo: newItem.id },
       narration: `${value} agora é o topo da pilha. push é O(1).`,
+      stepKind: "push",
     },
   ];
   return { ok: true, frames, nextState };
@@ -39,6 +40,7 @@ export function stackPop(state: ArrayState): OperationResult<ArrayState> {
       highlights: [{ id: top.id, color: "danger" }],
       pointers: { topo: top.id },
       narration: `Desempilhando (pop) o topo: ${top.value}.`,
+      stepKind: "identify",
     },
     {
       id: 1,
@@ -47,6 +49,7 @@ export function stackPop(state: ArrayState): OperationResult<ArrayState> {
       narration: newTop
         ? `${top.value} removido. Novo topo: ${newTop.value}. pop é O(1).`
         : `${top.value} removido. A pilha está vazia agora.`,
+      stepKind: "pop",
     },
   ];
   return { ok: true, frames, nextState };
@@ -64,6 +67,7 @@ export function stackPeek(state: ArrayState): OperationResult<ArrayState> {
       highlights: [{ id: top.id, color: "visit" }],
       pointers: { topo: top.id },
       narration: `Topo da pilha: ${top.value} (peek não remove, é O(1)).`,
+      stepKind: "peek",
     },
   ];
   return { ok: true, frames, nextState: state };

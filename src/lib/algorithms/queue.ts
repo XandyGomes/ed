@@ -11,13 +11,14 @@ export function queueEnqueue(state: ArrayState, value: number): OperationResult<
   nextState.items.push(newItem);
 
   const frames: FrameSequence<ArrayState> = [
-    { id: 0, state, narration: `Enfileirando (enqueue) o valor ${value} no final da fila...` },
+    { id: 0, state, narration: `Enfileirando (enqueue) o valor ${value} no final da fila...`, stepKind: "prepare" },
     {
       id: 1,
       state: nextState,
       highlights: [{ id: newItem.id, color: "new" }],
       pointers: { tras: newItem.id, frente: nextState.items[0].id },
       narration: `${value} entrou na fila. enqueue é O(1).`,
+      stepKind: "enqueue",
     },
   ];
   return { ok: true, frames, nextState };
@@ -39,6 +40,7 @@ export function queueDequeue(state: ArrayState): OperationResult<ArrayState> {
       highlights: [{ id: front.id, color: "danger" }],
       pointers: { frente: front.id },
       narration: `Desenfileirando (dequeue) a frente da fila: ${front.value}.`,
+      stepKind: "identify",
     },
     {
       id: 1,
@@ -47,6 +49,7 @@ export function queueDequeue(state: ArrayState): OperationResult<ArrayState> {
       narration: newFront
         ? `${front.value} removido. Nova frente: ${newFront.value}. dequeue é O(1).`
         : `${front.value} removido. A fila está vazia agora.`,
+      stepKind: "dequeue",
     },
   ];
   return { ok: true, frames, nextState };

@@ -11,25 +11,28 @@ export function quickSort(state: ArrayState): OperationResult<ArrayState> {
       id: 0,
       state: { items: [...items] },
       narration: "Iniciando Quick Sort: escolher um pivô e particionar o array ao redor dele.",
+      stepKind: "start",
     },
   ];
 
-  function pushFrame(highlights: Highlight[], narration: string) {
-    frames.push({ id: frames.length, state: { items: [...items] }, highlights, narration });
+  function pushFrame(highlights: Highlight[], narration: string, stepKind: string) {
+    frames.push({ id: frames.length, state: { items: [...items] }, highlights, narration, stepKind });
   }
 
   function partition(low: number, high: number): number {
     const pivot = items[high];
     pushFrame(
       [...sortedIds].map((id) => hl(id, "success")).concat([hl(pivot.id, "danger")]),
-      `Pivô escolhido: ${pivot.value} (último elemento do intervalo).`
+      `Pivô escolhido: ${pivot.value} (último elemento do intervalo).`,
+      "pivot"
     );
 
     let i = low - 1;
     for (let j = low; j < high; j++) {
       pushFrame(
         [...sortedIds].map((id) => hl(id, "success")).concat([hl(pivot.id, "danger"), hl(items[j].id, "compare")]),
-        `Comparando ${items[j].value} com o pivô ${pivot.value}...`
+        `Comparando ${items[j].value} com o pivô ${pivot.value}...`,
+        "compare"
       );
       if (items[j].value <= pivot.value) {
         i++;
@@ -39,7 +42,8 @@ export function quickSort(state: ArrayState): OperationResult<ArrayState> {
           items[j] = tmp;
           pushFrame(
             [...sortedIds].map((id) => hl(id, "success")).concat([hl(pivot.id, "danger"), hl(items[i].id, "new")]),
-            `${items[i].value} ≤ pivô: troca para a posição ${i}.`
+            `${items[i].value} ≤ pivô: troca para a posição ${i}.`,
+            "swap"
           );
         }
       }
@@ -51,7 +55,8 @@ export function quickSort(state: ArrayState): OperationResult<ArrayState> {
     sortedIds.add(items[i + 1].id);
     pushFrame(
       [...sortedIds].map((id) => hl(id, "success")),
-      `Pivô ${items[i + 1].value} vai para a posição ${i + 1}: essa é a posição final dele.`
+      `Pivô ${items[i + 1].value} vai para a posição ${i + 1}: essa é a posição final dele.`,
+      "position-final"
     );
     return i + 1;
   }
@@ -72,6 +77,7 @@ export function quickSort(state: ArrayState): OperationResult<ArrayState> {
     state: { items: [...items] },
     highlights: items.map((it) => hl(it.id, "success")),
     narration: `Array ordenado: ${items.map((i) => i.value).join(", ")}.`,
+    stepKind: "done",
   });
 
   return { ok: true, frames, nextState: { items } };

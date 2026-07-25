@@ -29,6 +29,7 @@ export function recursaoFatorial(state: ArrayState, nRaw: number): OperationResu
         k === 0
           ? "Caso base: fatorial(0) = 1. Agora desempilhamos e calculamos de baixo para cima."
           : `fatorial(${k}) precisa do resultado de fatorial(${k - 1}) antes de calcular. Empilha novo quadro.`,
+      stepKind: k === 0 ? "base" : "call",
     });
   }
 
@@ -43,6 +44,7 @@ export function recursaoFatorial(state: ArrayState, nRaw: number): OperationResu
       highlights: [{ id: frameIds[k], color: "compare" }],
       pointers: { topo: frameIds[k] },
       narration: `fatorial(${k - 1}) retornou ${prevAcc}. fatorial(${k}) = ${k} × ${prevAcc} = ${acc}.`,
+      stepKind: "return",
     });
   }
 

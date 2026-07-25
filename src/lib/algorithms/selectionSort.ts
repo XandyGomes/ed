@@ -12,6 +12,7 @@ export function selectionSort(state: ArrayState): OperationResult<ArrayState> {
       id: 0,
       state: { items: [...items] },
       narration: "Iniciando Selection Sort: encontrar o menor elemento e colocá-lo na posição correta.",
+      stepKind: "start",
     },
   ];
 
@@ -22,6 +23,7 @@ export function selectionSort(state: ArrayState): OperationResult<ArrayState> {
       state: { items: [...items] },
       highlights: [...sortedIds].map((id) => hl(id, "success")).concat([hl(items[i].id, "visit")]),
       narration: `Procurando o menor valor a partir da posição ${i}...`,
+      stepKind: "visit",
     });
 
     for (let j = i + 1; j < n; j++) {
@@ -32,6 +34,7 @@ export function selectionSort(state: ArrayState): OperationResult<ArrayState> {
           .map((id) => hl(id, "success"))
           .concat([hl(items[minIdx].id, "visit"), hl(items[j].id, "compare")]),
         narration: `Comparando o menor atual (${items[minIdx].value}) com ${items[j].value}...`,
+        stepKind: "compare",
       });
       if (items[j].value < items[minIdx].value) {
         minIdx = j;
@@ -40,6 +43,7 @@ export function selectionSort(state: ArrayState): OperationResult<ArrayState> {
           state: { items: [...items] },
           highlights: [...sortedIds].map((id) => hl(id, "success")).concat([hl(items[minIdx].id, "visit")]),
           narration: `Novo menor encontrado: ${items[minIdx].value}.`,
+          stepKind: "new-min",
         });
       }
     }
@@ -53,6 +57,7 @@ export function selectionSort(state: ArrayState): OperationResult<ArrayState> {
         state: { items: [...items] },
         highlights: [...sortedIds].map((id) => hl(id, "success")).concat([hl(items[i].id, "new")]),
         narration: `Troca: ${items[i].value} vai para a posição ${i}.`,
+        stepKind: "swap",
       });
     }
 
@@ -62,6 +67,7 @@ export function selectionSort(state: ArrayState): OperationResult<ArrayState> {
       state: { items: [...items] },
       highlights: [...sortedIds].map((id) => hl(id, "success")),
       narration: `${items[i].value} está na posição final.`,
+      stepKind: "position-final",
     });
   }
 
@@ -71,6 +77,7 @@ export function selectionSort(state: ArrayState): OperationResult<ArrayState> {
     state: { items: [...items] },
     highlights: items.map((it) => hl(it.id, "success")),
     narration: `Array ordenado: ${items.map((it) => it.value).join(", ")}.`,
+    stepKind: "done",
   });
 
   return { ok: true, frames, nextState: { items } };

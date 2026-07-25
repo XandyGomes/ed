@@ -10,6 +10,7 @@ import {
   makeSparseMatrixStateFromGrid,
 } from "@/lib/algorithms/sparseMatrix";
 import { gridFromImage } from "@/lib/algorithms/imageMatrix";
+import { SPARSE_MATRIX_GERAR_CODE, SPARSE_MATRIX_RECONSTRUIR_CODE } from "@/lib/code/sparseMatrix.code";
 import type { SparseMatrixState } from "@/lib/algorithms/sparseMatrix";
 import type { Highlight, OperationDef } from "@/lib/types";
 
@@ -30,6 +31,8 @@ const legend = [
   { label: "verificando", color: "var(--color-highlight-compare)" },
   { label: "não-zero (na lista esparsa)", color: "var(--color-highlight-success)" },
 ];
+
+const code = { gerar: SPARSE_MATRIX_GERAR_CODE, reconstruir: SPARSE_MATRIX_RECONSTRUIR_CODE };
 
 const RESOLUCOES = [12, 18, 24] as const;
 
@@ -80,6 +83,7 @@ export default function MatrizEsparsaPlayground() {
         operations={operations}
         Renderer={SparseMatrixRenderer}
         legend={legend}
+        code={code}
       />
 
       <div className="glass-panel rounded-2xl p-4">
@@ -134,6 +138,7 @@ export default function MatrizEsparsaPlayground() {
             operations={operations}
             Renderer={ImagePixelRenderer}
             legend={legend}
+            code={code}
           />
         )}
       </div>

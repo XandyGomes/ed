@@ -5,6 +5,7 @@ import { StructurePlayground } from "@/components/visualizer/StructurePlayground
 import { ArrayRenderer } from "@/components/visualizer/renderers/ArrayRenderer";
 import { makeArrayState } from "@/lib/algorithms/common";
 import { arrayAccess, arrayInsertAt, arrayRemoveAt } from "@/lib/algorithms/array";
+import { ARRAY_ACCESS_CODE, ARRAY_INSERT_CODE, ARRAY_REMOVE_CODE } from "@/lib/code/array.code";
 import type { ArrayState, OperationDef } from "@/lib/types";
 
 const operations: OperationDef<ArrayState>[] = [
@@ -39,6 +40,7 @@ export default function ArraysPlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={ArrayRenderer}
+      code={{ acessar: ARRAY_ACCESS_CODE, inserir: ARRAY_INSERT_CODE, remover: ARRAY_REMOVE_CODE }}
       legend={[
         { label: "comparando/acessando", color: "var(--color-highlight-visit)" },
         { label: "sucesso", color: "var(--color-highlight-success)" },

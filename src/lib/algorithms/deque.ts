@@ -8,13 +8,14 @@ export function dequeInsertFront(state: ArrayState, value: number): OperationRes
   const nextState = cloneArrayState(state);
   nextState.items.unshift(newItem);
   const frames: FrameSequence<ArrayState> = [
-    { id: 0, state, narration: `Inserindo ${value} na frente do deque...` },
+    { id: 0, state, narration: `Inserindo ${value} na frente do deque...`, stepKind: "prepare" },
     {
       id: 1,
       state: nextState,
       highlights: [{ id: newItem.id, color: "new" }],
       pointers: { frente: newItem.id, tras: nextState.items[nextState.items.length - 1].id },
       narration: `${value} inserido na frente. Inserção nas pontas é O(1).`,
+      stepKind: "insert",
     },
   ];
   return { ok: true, frames, nextState };
@@ -26,13 +27,14 @@ export function dequeInsertBack(state: ArrayState, value: number): OperationResu
   const nextState = cloneArrayState(state);
   nextState.items.push(newItem);
   const frames: FrameSequence<ArrayState> = [
-    { id: 0, state, narration: `Inserindo ${value} no final do deque...` },
+    { id: 0, state, narration: `Inserindo ${value} no final do deque...`, stepKind: "prepare" },
     {
       id: 1,
       state: nextState,
       highlights: [{ id: newItem.id, color: "new" }],
       pointers: { tras: newItem.id, frente: nextState.items[0].id },
       narration: `${value} inserido no final. Inserção nas pontas é O(1).`,
+      stepKind: "insert",
     },
   ];
   return { ok: true, frames, nextState };
@@ -50,12 +52,14 @@ export function dequeRemoveFront(state: ArrayState): OperationResult<ArrayState>
       highlights: [{ id: front.id, color: "danger" }],
       pointers: { frente: front.id },
       narration: `Removendo a frente do deque: ${front.value}.`,
+      stepKind: "identify",
     },
     {
       id: 1,
       state: nextState,
       pointers: nextState.items[0] ? { frente: nextState.items[0].id } : undefined,
       narration: `${front.value} removido. Remoção nas pontas é O(1).`,
+      stepKind: "remove",
     },
   ];
   return { ok: true, frames, nextState };
@@ -73,6 +77,7 @@ export function dequeRemoveBack(state: ArrayState): OperationResult<ArrayState> 
       highlights: [{ id: back.id, color: "danger" }],
       pointers: { tras: back.id },
       narration: `Removendo o final do deque: ${back.value}.`,
+      stepKind: "identify",
     },
     {
       id: 1,
@@ -81,6 +86,7 @@ export function dequeRemoveBack(state: ArrayState): OperationResult<ArrayState> 
         ? { tras: nextState.items[nextState.items.length - 1].id }
         : undefined,
       narration: `${back.value} removido. Remoção nas pontas é O(1).`,
+      stepKind: "remove",
     },
   ];
   return { ok: true, frames, nextState };

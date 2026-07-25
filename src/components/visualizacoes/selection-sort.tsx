@@ -5,6 +5,7 @@ import { StructurePlayground } from "@/components/visualizer/StructurePlayground
 import { ArrayRenderer } from "@/components/visualizer/renderers/ArrayRenderer";
 import { makeArrayState } from "@/lib/algorithms/common";
 import { selectionSort } from "@/lib/algorithms/selectionSort";
+import { SELECTION_SORT_CODE } from "@/lib/code/selectionSort.code";
 import type { ArrayState, OperationDef } from "@/lib/types";
 
 const operations: OperationDef<ArrayState>[] = [
@@ -23,6 +24,7 @@ export default function SelectionSortPlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={ArrayRenderer}
+      code={{ ordenar: SELECTION_SORT_CODE }}
       legend={[
         { label: "menor atual", color: "var(--color-highlight-visit)" },
         { label: "comparando", color: "var(--color-highlight-compare)" },

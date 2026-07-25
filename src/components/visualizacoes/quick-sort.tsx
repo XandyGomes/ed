@@ -5,6 +5,7 @@ import { StructurePlayground } from "@/components/visualizer/StructurePlayground
 import { ArrayRenderer } from "@/components/visualizer/renderers/ArrayRenderer";
 import { makeArrayState } from "@/lib/algorithms/common";
 import { quickSort } from "@/lib/algorithms/quickSort";
+import { QUICK_SORT_CODE } from "@/lib/code/quickSort.code";
 import type { ArrayState, OperationDef } from "@/lib/types";
 
 const operations: OperationDef<ArrayState>[] = [
@@ -23,6 +24,7 @@ export default function QuickSortPlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={ArrayRenderer}
+      code={{ ordenar: QUICK_SORT_CODE }}
       legend={[
         { label: "pivô", color: "var(--color-highlight-danger)" },
         { label: "comparando", color: "var(--color-highlight-compare)" },

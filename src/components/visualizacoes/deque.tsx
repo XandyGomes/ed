@@ -10,6 +10,12 @@ import {
   dequeRemoveFront,
   dequeRemoveBack,
 } from "@/lib/algorithms/deque";
+import {
+  DEQUE_INSERT_FRONT_CODE,
+  DEQUE_INSERT_BACK_CODE,
+  DEQUE_REMOVE_FRONT_CODE,
+  DEQUE_REMOVE_BACK_CODE,
+} from "@/lib/code/deque.code";
 import type { ArrayState, OperationDef } from "@/lib/types";
 
 const operations: OperationDef<ArrayState>[] = [
@@ -45,6 +51,12 @@ export default function DequePlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={QueueRenderer}
+      code={{
+        "insere-frente": DEQUE_INSERT_FRONT_CODE,
+        "insere-tras": DEQUE_INSERT_BACK_CODE,
+        "remove-frente": DEQUE_REMOVE_FRONT_CODE,
+        "remove-tras": DEQUE_REMOVE_BACK_CODE,
+      }}
       legend={[
         { label: "recém-inserido", color: "var(--color-highlight-new)" },
         { label: "removendo", color: "var(--color-highlight-danger)" },
