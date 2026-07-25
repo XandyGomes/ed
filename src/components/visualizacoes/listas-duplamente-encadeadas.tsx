@@ -11,6 +11,13 @@ import {
   dllRemoveTail,
   dllSearch,
 } from "@/lib/algorithms/doublyLinkedList";
+import {
+  DLL_INSERT_HEAD_CODE,
+  DLL_INSERT_TAIL_CODE,
+  DLL_REMOVE_HEAD_CODE,
+  DLL_REMOVE_TAIL_CODE,
+  DLL_SEARCH_CODE,
+} from "@/lib/code/doublyLinkedList.code";
 import type { ArrayState, OperationDef } from "@/lib/types";
 
 const operations: OperationDef<ArrayState>[] = [
@@ -52,6 +59,13 @@ export default function ListasDuplamenteEncadeadasPlayground() {
       initialState={initialState}
       operations={operations}
       Renderer={DoublyLinkedListRenderer}
+      code={{
+        "inserir-inicio": DLL_INSERT_HEAD_CODE,
+        "inserir-fim": DLL_INSERT_TAIL_CODE,
+        "remover-inicio": DLL_REMOVE_HEAD_CODE,
+        "remover-fim": DLL_REMOVE_TAIL_CODE,
+        buscar: DLL_SEARCH_CODE,
+      }}
       legend={[
         { label: "recém-inserido", color: "var(--color-highlight-new)" },
         { label: "comparando", color: "var(--color-highlight-compare)" },
